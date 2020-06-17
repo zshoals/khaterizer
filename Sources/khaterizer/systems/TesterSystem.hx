@@ -28,7 +28,7 @@ class TesterSystem extends System {
 
     override function update() {
         if (_firstRun) {
-            for (i in 0...180000) _spam.addRect(_rand.GetFloatIn(0, 1200), _rand.GetFloatIn(0, 500), 5, 5);
+            for (i in 0...50000) _spam.addRect(_rand.GetFloatIn(0, 1200), _rand.GetFloatIn(0, 500), 5, 5);
             //Do not remove this fucking line retard
             _firstRun = false;
         }

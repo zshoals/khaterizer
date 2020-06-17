@@ -1,5 +1,6 @@
 package khaterizer;
 
+import khaterizer.util.TimerUtil;
 import kha.Assets;
 import kha.Framebuffer;
 import kha.FramebufferOptions;
@@ -54,8 +55,8 @@ class Khaterizer {
 				
 				// Avoid passing update/render directly,
 				// so replacing them via code injection work
-				Scheduler.addTimeTask(function () { _game.update(); }, 0, 1 / MathUtil.clamp(_options.updateRate, 10, 1000)); //Protect against dangerous update rates
-				System.notifyOnFrames(function (frames) { _game.render(frames); });
+				Scheduler.addTimeTask(function () { _game.update(); }, 0, 1 / MathUtil.clamp(_options.updateRate, 10, 500)); //Protect against dangerous update rates
+				System.notifyOnFrames(function (frames) { _game.render(frames);});
 			});
 		});
 	}
