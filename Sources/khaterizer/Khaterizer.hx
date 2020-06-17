@@ -61,6 +61,7 @@ class Khaterizer {
 		});
 	}
 
+
 	static inline function defaultConfigInit(plugins:Array<WorldConfig>) {
 		var config = new WorldConfig();
         //==Plugins==

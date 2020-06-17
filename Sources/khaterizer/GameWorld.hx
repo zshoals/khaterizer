@@ -69,6 +69,11 @@ class GameWorld {
 
     }
 
+    /**
+        Draws a debug menu :^)
+        
+        @param g2 The Kha `Graphics` instance
+    **/
     inline function renderDebugMenu(g2:Graphics) {
         g2.begin(false);
 
