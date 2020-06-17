@@ -36,14 +36,14 @@ class GameWorld {
         Renderer.init(Display.primary.width, Display.primary.height, _world);
     }
 
-	public function update():Void {
+    public function update():Void {
         for(system in _world.systems()) {
             @:privateAccess system.update();
             _world.invalidate();
         }
-	}
+    }
 
-	public function render(frames: Array<Framebuffer>):Void {
+    public function render(frames: Array<Framebuffer>):Void {
         _drawTimer.update();
 
         final drawable = Renderer.render();
