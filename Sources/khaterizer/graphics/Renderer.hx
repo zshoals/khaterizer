@@ -1,4 +1,4 @@
-package khaterizer.core;
+package khaterizer.graphics;
 
 import ecx.types.EntityVector;
 import khaterizer.systems.RenderSystem;

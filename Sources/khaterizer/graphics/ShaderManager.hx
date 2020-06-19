@@ -1,4 +1,4 @@
-package khaterizer.core;
+package khaterizer.graphics;
 
 import kha.Shaders;
 import kha.graphics4.PipelineState;

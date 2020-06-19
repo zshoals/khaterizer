@@ -16,7 +16,7 @@ import khaterizer.components.*;
 import khaterizer.components.collision.*;
 import khaterizer.components.graphics.*;
 import khaterizer.systems.*;
-import khaterizer.core.*;
+import khaterizer.graphics.*;
 import khaterizer.util.*;
 
 enum abstract SystemPriority(Int) to Int {
@@ -62,7 +62,7 @@ class Khaterizer {
     }
 
 
-    static inline function defaultConfigInit(plugins:Array<WorldConfig>) {
+    static inline function defaultConfigInit(plugins:Array<WorldConfig>):Void {
         var config = new WorldConfig();
         //==Plugins==
         for (plugin in plugins) config.include(plugin);

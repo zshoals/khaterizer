@@ -10,7 +10,7 @@ import kha.graphics2.Graphics;
 import kha.Framebuffer;
 import kha.Color;
 import kha.Scheduler;
-import khaterizer.core.Renderer;
+import khaterizer.graphics.Renderer;
 import khaterizer.util.TimerUtil;
 
 @:nullSafety(Strict)
@@ -28,7 +28,7 @@ class GameWorld {
         _world = world;
         _drawTimer = new TimerUtil();
         _fpsTimer = new TimerUtil();
-
+        
         _recentFPS = [];
         _renderCycles = 0;
         _renderCyclesResult = 0;
@@ -74,7 +74,7 @@ class GameWorld {
         
         @param g2 The Kha `Graphics` instance
     **/
-    inline function renderDebugMenu(g2:Graphics) {
+    inline function renderDebugMenu(g2:Graphics):Void {
         g2.begin(false);
 
         g2.color = Color.Black;

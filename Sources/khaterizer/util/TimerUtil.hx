@@ -3,6 +3,11 @@ package khaterizer.util;
 import haxe.Timer;
 import kha.Scheduler;
 
+/**
+    Generic timer that can be updated to `measure` the time differential.
+
+    Contains separate retrieval functions for atomized and real time from Kha's Scheduler.
+**/
 class TimerUtil {
     var _updateTime:Float;
     var _updateRealTime:Float;
@@ -16,43 +21,61 @@ class TimerUtil {
         _lastUpdateRealTime = _updateRealTime;
     }
 
-    public function update() {
+    /**
+        Updates the current atomized and real times to the present.
+
+        Stores the previous times for `measure` purposes.
+    **/
+    public function update():Void {
         _lastUpdateTime = _updateTime;
         _lastUpdateRealTime = _updateRealTime;
         _updateTime = Scheduler.time();
         _updateRealTime = Scheduler.realTime();
     }
 
-    //The adjusted time between update calls on this timer
-    public inline function measure() {
+    /**
+        Atomized time between update calls.
+    **/
+    public inline function measure():Float {
         return _updateTime - _lastUpdateTime;
     }
 
-    //The real time between update calls on this timer
-    public inline function measureReal() {
+    /**
+        Real time between update calls.
+    **/
+    public inline function measureReal():Float {
         return _updateRealTime - _lastUpdateRealTime;
     }
 
-    //The adjusted time differential between this exact moment and the last invocation of update
-    public inline function dt() {
+    /**
+        Atomized time differential between the previous update time and right now.
+    **/
+    public inline function dt():Float {
         return Scheduler.time() - _updateTime;
     }
-    //The real time differential between this exact moment and the last invocation of update
-    public inline function dtReal() {
+
+    /**
+        Real time differential between the previous update time and right now.
+    **/
+    public inline function dtReal():Float {
         return Scheduler.realTime() - _updateRealTime;
     }
 
-    //Current adjusted time
-    public inline function current() {
+    /**
+        Atomized time as of this instant.
+    **/
+    public inline function current():Float {
         return Scheduler.time();
     }
 
-    //Current real time
-    public inline function currentReal() {
+    /**
+        Real time as of this instant.
+    **/
+    public inline function currentReal():Float {
         return Scheduler.realTime();
     }
 
-    public static function delay(func:Void -> Void, time_seconds:Float) {
+    public static function delay(func:Void -> Void, time_seconds:Float):Void {
         var ms = Std.int(Math.round(time_seconds));
         Timer.delay(func, ms);
     }

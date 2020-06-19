@@ -1,6 +1,6 @@
 package khaterizer.systems;
 
-import khaterizer.core.Renderer;
+import khaterizer.graphics.Renderer;
 import khaterizer.types.RenderPackage;
 import khaterizer.components.graphics.Renderable;
 import khaterizer.components.Spatial;
