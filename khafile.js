@@ -8,4 +8,6 @@ project.addLibrary('HaxeContracts');
 project.addLibrary('ds');
 project.addLibrary('zui');
 
+project.addDefine('khaterizer_default_services_enabled');
+
 resolve(project);

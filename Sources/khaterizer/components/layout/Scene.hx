@@ -5,11 +5,14 @@ import khaterizer.components.layout.Layer;
 
 class Scene extends AutoComp<SceneData>{}
 
+typedef SceneHandle = String;
+
 class SceneData {
-    var layers:Array<Layer>;
+    public var handle:SceneHandle;
+
     public function new(){}
 
-    public function setup(layers:Array<Layer>) {
-        this.layers = layers;
+    public function setup(handle:SceneHandle) {
+        this.handle = handle;
     }
 }

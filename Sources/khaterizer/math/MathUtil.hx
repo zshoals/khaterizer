@@ -10,4 +10,12 @@ class MathUtil {
     public inline static function clamp(val:Float, minimum:Float, max:Float):Float {
         return Math.min(Math.max(val, minimum), max);
     }
+
+    public inline static function deg2rad(degrees:Float) {
+        return Math.PI / 180;
+    }
+
+    public inline static function rad2deg(radians:Float) {
+        return 180 / Math.PI;
+    }
 }

@@ -13,7 +13,13 @@ enum abstract LayerID {
     var FOREGROUND_MEDIUM = 2;
     var FOREGROUND_FAR = 3;
 
-    var USER_INTERFACE = 100;
+    var HUD_BACKGROUND = 99;
+    var HUD = 100;
+    var HUD_FOREGROUND = 101;
+
+    var MENU_BACKGROUND = 199;
+    var MENU = 200;
+    var MENU_FOREGROUND = 201;
 }
 
 class Layer extends AutoComp<LayerID>{}

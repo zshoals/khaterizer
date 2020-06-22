@@ -22,13 +22,13 @@ class TesterSystem extends System {
     var _ents:Family<Spatial>;
     var count = 0;
 
-    public function new(){
+    public function new() {
         _rand = new Random(1337);
     }
 
     override function update() {
         if (_firstRun) {
-            for (i in 0...100000) _spam.addRect(_rand.GetFloatIn(0, 1200), _rand.GetFloatIn(0, 500), 5, 5);
+            for (i in 0...50000) _spam.addRect(_rand.GetFloatIn(0, 1200), _rand.GetFloatIn(0, 500), 5, 5);
             //Do not remove this fucking line retard
             _firstRun = false;
         }

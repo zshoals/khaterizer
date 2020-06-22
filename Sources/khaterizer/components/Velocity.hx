@@ -6,9 +6,9 @@ import kha.math.Vector2;
 class Velocity extends AutoComp<VelocityData>{}
 
 class VelocityData {
-    var velocity:Vector2;
-    var angularVelocity:Float;
-    var acceleration:Float;
+    public var velocity:Vector2;
+    public var angularVelocity:Float;
+    public var acceleration:Float;
     
     public function new(){}
 

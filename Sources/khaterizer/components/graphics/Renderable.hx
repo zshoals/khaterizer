@@ -1,6 +1,5 @@
 package khaterizer.components.graphics;
 
-import js.html.webgl.Shader;
 import ecx.AutoComp;
 import khaterizer.graphics.ShaderManager;
 import khaterizer.graphics.Shader;
@@ -11,14 +10,14 @@ class Renderable extends AutoComp<RenderData> {}
 
 class RenderData {
     //Should have shader info, basic shader is always necessary
-    var colors:Array<Color>;
-    var shader:Shader;
+    public var colors:Array<Color>;
+    //public var shader:Shader;
 
     public function new() {}
 
-    public function setup(colors:Color, shader:Shader):Void {
+    public function setup(colors:Color):Void {
         this.colors.push(colors);
-        this.shader = shader;
+        //this.shader = shader;
     }
 
 }
