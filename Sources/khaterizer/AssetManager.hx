@@ -1,0 +1,5 @@
+package khaterizer;
+
+class AssetManager {
+    
+}

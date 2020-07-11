@@ -1,7 +1,7 @@
 package khaterizer.graphics;
 
 import ecx.types.EntityVector;
-import khaterizer.systems.RenderSystem;
+import khaterizer.systems.graphics.RenderSystem;
 import khaterizer.components.graphics.Renderable;
 import khaterizer.components.Spatial;
 import ecx.World;
@@ -11,33 +11,34 @@ import kha.graphics2.Graphics;
 import khaterizer.types.RenderPackage;
 
 class Renderer {
-    static var _renderables:RenderPackage;
-    static var _image:Image;
-    static var _world:World;
-    static var _spatials:Spatial;
-    static var _renderables2:EntityVector;
+    var backbuffer:Image;
 
-    public static function init(renderTargetWidth:Int, renderTargetHeight:Int, world:World):Void {
-        _world = world;
-        _image = Image.createRenderTarget(renderTargetWidth, renderTargetHeight);
-        _renderables = new RenderPackage();
+    var world:World;
+    var spatials:Spatial;
+    var renderables:EntityVector;
 
-        _spatials = _world.resolve(Spatial);
-        _renderables2 = _world.resolve(RenderSystem)._renderables;
+    public function new(backbufferWidth:Int, backbufferHeight:Int) {
+        //---Let's not make this a habit, world.resolve should only be used in really weird situations like this
+        //---It needs to be used here since doing this from within ECX's System loop effectively locks the 
+        //---visible framerate to the system update rate, which is not desirable. We do not want 60 drawn frames
+        //---on a 120+ hz monitor
+        world = Khaterizer.world;
+        spatials = world.resolve(Spatial);
+        renderables = world.resolve(RenderSystem).renderables;
+        //---
+
+        backbuffer = Image.createRenderTarget(backbufferWidth, backbufferHeight);
     }
-
 
     //This could instead take a list of draw functions, supplied by various ecx render systems
     //and then simply call those functions. Should work, right?
-    public static function render():Image {
-        if (_image == null) throw "Renderer must run init() before rendering";
-
-        final g2 = _image.g2;
+    public function render():Image {
+        final g2 = backbuffer.g2;
 
         g2.begin();
         
-        for (r in _renderables2) {
-            var pos = _spatials.get(r).position;
+        for (r in renderables) {
+            var pos = spatials.get(r).position;
             var x = pos.x;
             var y = pos.y;
             g2.color = Color.Green;
@@ -46,10 +47,11 @@ class Renderer {
 
         g2.end();
 
-        return _image;
+        return backbuffer;
     }
 
-    public static function updateRenderables(renderables:RenderPackage) {
-        _renderables = renderables;
+    public function changeBackbufferSize(backbufferWidth:Int, backbufferHeight:Int):Void {
+        backbuffer.unload();
+        backbuffer = Image.createRenderTarget(backbufferWidth, backbufferHeight);
     }
 }

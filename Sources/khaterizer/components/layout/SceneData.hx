@@ -1,11 +1,10 @@
 package khaterizer.components.layout;
 
-import ecx.AutoComp;
-import khaterizer.components.layout.Layer;
-
-class Scene extends AutoComp<SceneData>{}
-
-typedef SceneHandle = String;
+abstract SceneHandle(String) {
+    public inline function new(s:String) {
+        this = s;
+    }
+}
 
 class SceneData {
     public var handle:SceneHandle;

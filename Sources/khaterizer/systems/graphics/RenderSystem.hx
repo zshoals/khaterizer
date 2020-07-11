@@ -1,4 +1,4 @@
-package khaterizer.systems;
+package khaterizer.systems.graphics;
 
 import ecx.System;
 import khaterizer.components.graphics.Renderable;
@@ -11,11 +11,11 @@ import khaterizer.components.Spatial;
  * 
  * This class should still be added to the world config.
  * 
- * If you are trying to create a lockstep renderer, then you should use this system directly to handle drawing.
+ * If you are trying to create a lockstep renderer, then you can use this system directly to handle drawing.
  * **/
 class RenderSystem extends System {
 
-    public var _renderables:Family<Renderable, Spatial>;
+    public var renderables:Family<Renderable, Spatial>;
 
     public function new(){}
 

@@ -4,7 +4,6 @@ project.addShaders('Shaders/**');
 project.addSources('Sources');
 
 project.addLibrary('ecx-sh');
-project.addLibrary('HaxeContracts');
 project.addLibrary('ds');
 project.addLibrary('zui');
 

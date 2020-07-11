@@ -1,0 +1,10 @@
+Khaterizer relies on the following third party assets and tools:
+
+Tools:
+    Haxe --- Various Licenses https://haxe.org/foundation/open-source.html :: https://haxe.org/
+    Kha and Associated Toolchain --- ZLib License https://github.com/Kode/Kha/blob/master/license.txt :: https://github.com/Kode/Kha
+    ECX --- MIT License :: https://github.com/eliasku/ecx 
+    ds --- https://github.com/polygonal/ds/blob/master/LICENSE :: https://github.com/polygonal/ds
+
+Assets:
+    Roboto Font Family --- Apache License Version 2.0 https://fonts.google.com/specimen/Roboto?query=Roboto#about
