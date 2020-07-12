@@ -1,8 +1,8 @@
-package khaterizer.systems.graphics;
+package khaterizer.ecs.systems.graphics;
 
 import ecx.System;
-import khaterizer.components.graphics.Renderable;
-import khaterizer.components.Spatial;
+import khaterizer.ecs.components.graphics.Renderable;
+import khaterizer.ecs.components.Spatial;
 
 /**
  * This is a proxy class.
@@ -19,5 +19,7 @@ class RenderSystem extends System {
 
     public function new(){}
 
-    override function update(){}
+    override function update(){
+        return;
+    }
 }

@@ -25,7 +25,7 @@ class Application {
     var fpsTimer:TimerUtil;
     var recentFPS:Array<Float>;
     var renderCycles:Int;
-    var renderCyclesResult:Int;
+    var fpsResult:Int;
 
     public function new() {
         drawTimer = new TimerUtil();
@@ -33,7 +33,7 @@ class Application {
         
         recentFPS = [];
         renderCycles = 0;
-        renderCyclesResult = 0;
+        fpsResult = 0;
 
         renderer = new Renderer(Display.primary.width, Display.primary.height);
     }
@@ -60,7 +60,7 @@ class Application {
 
         if (fpsTimer.dtReal() > 1) {
             fpsTimer.update();
-            renderCyclesResult = renderCycles;
+            fpsResult = renderCycles;
             renderCycles = 0;
         }
         else {
@@ -79,13 +79,14 @@ class Application {
         g2.begin(false);
 
         g2.color = Color.Black;
-        g2.fillRect(0, 0, 300, 100);
+        g2.fillRect(0, 0, 400, 100);
 
         g2.color = Color.White;
         g2.font = Khaterizer.debugFont;
         g2.fontSize = 24;
-        g2.drawString("Frames Per Second: " + renderCyclesResult, 20, 20);
-        g2.drawString("Render Time: " + calcFrametimeAverage(), 20, 40);
+        g2.drawString("Frames Per Second: " + fpsResult, 20, 20);
+        g2.drawString("Backbuffer Render Time: " + calcFrametimeAverage(), 20, 40);
+        g2.drawString("Fucking Squares on Screen: " + world.used, 20, 60);
 
         g2.end();
     }

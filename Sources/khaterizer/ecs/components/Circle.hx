@@ -1,4 +1,4 @@
-package khaterizer.components;
+package khaterizer.ecs.components;
 
 import ecx.AutoComp;
 

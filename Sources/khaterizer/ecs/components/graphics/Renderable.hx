@@ -1,4 +1,4 @@
-package khaterizer.components.graphics;
+package khaterizer.ecs.components.graphics;
 
 import ecx.AutoComp;
 import khaterizer.graphics.ShaderManager;

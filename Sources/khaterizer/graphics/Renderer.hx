@@ -1,9 +1,9 @@
 package khaterizer.graphics;
 
 import ecx.types.EntityVector;
-import khaterizer.systems.graphics.RenderSystem;
-import khaterizer.components.graphics.Renderable;
-import khaterizer.components.Spatial;
+import khaterizer.ecs.systems.graphics.RenderSystem;
+import khaterizer.ecs.components.graphics.Renderable;
+import khaterizer.ecs.components.Spatial;
 import ecx.World;
 import kha.Color;
 import kha.Image;
@@ -19,13 +19,13 @@ class Renderer {
 
     public function new(backbufferWidth:Int, backbufferHeight:Int) {
         //---Let's not make this a habit, world.resolve should only be used in really weird situations like this
-        //---It needs to be used here since doing this from within ECX's System loop effectively locks the 
-        //---visible framerate to the system update rate, which is not desirable. We do not want 60 drawn frames
-        //---on a 120+ hz monitor
+        //---It needs to be used here since trying to do rendering from within ECX's System loop effectively locks the 
+        //---visible framerate to the system update rate, which is not desirable. 
+        //---Example: We do not want to be hard locked to 60 logical frames without being able to interpolate info up to 120 visible frames
         world = Khaterizer.world;
         spatials = world.resolve(Spatial);
         renderables = world.resolve(RenderSystem).renderables;
-        //---
+        //-------------------------------------------------------------------
 
         backbuffer = Image.createRenderTarget(backbufferWidth, backbufferHeight);
     }

@@ -3,8 +3,8 @@ package khaterizer.util;
 import ecx.Entity;
 import ecx.Service;
 import ecx.Wire;
-import khaterizer.components.Spatial;
-import khaterizer.components.graphics.Renderable;
+import khaterizer.ecs.components.Spatial;
+import khaterizer.ecs.components.graphics.Renderable;
 
 class Spammer extends Service {
 

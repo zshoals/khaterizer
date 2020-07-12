@@ -1,4 +1,4 @@
-package khaterizer.components.collision;
+package khaterizer.ecs.components.collision;
 
 import khaterizer.components.CircleData;
 

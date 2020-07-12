@@ -1,4 +1,4 @@
-package khaterizer.components;
+package khaterizer.ecs.components;
 
 import kha.math.Vector2;
 import ecx.AutoComp;

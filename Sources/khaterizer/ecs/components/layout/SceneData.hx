@@ -1,4 +1,4 @@
-package khaterizer.components.layout;
+package khaterizer.ecs.components.layout;
 
 abstract SceneHandle(String) {
     public inline function new(s:String) {

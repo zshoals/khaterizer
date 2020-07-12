@@ -1,13 +1,13 @@
-package khaterizer.systems;
+package khaterizer.ecs.systems;
 
-import khaterizer.components.graphics.Renderable;
+import khaterizer.ecs.components.graphics.Renderable;
 import kha.math.Vector2;
 import kha.math.Random;
 import ecx.System;
 
-import khaterizer.components.collision.CollisionRect;
-import khaterizer.components.Rect;
-import khaterizer.components.Spatial;
+import khaterizer.ecs.components.collision.CollisionRect;
+import khaterizer.ecs.components.Rect;
+import khaterizer.ecs.components.Spatial;
 
 import khaterizer.util.Spammer;
 
@@ -28,7 +28,7 @@ class TesterSystem extends System {
 
     override function update() {
         if (_firstRun) {
-            for (i in 0...50000) _spam.addRect(_rand.GetFloatIn(0, 1200), _rand.GetFloatIn(0, 500), 5, 5);
+            for (i in 0...100000) _spam.addRect(_rand.GetFloatIn(0, 1300), _rand.GetFloatIn(0, 700), 5, 5);
             //Do not remove this fucking line retard
             _firstRun = false;
         }
@@ -42,8 +42,8 @@ class TesterSystem extends System {
         var accum = 0.0;
         for (ent in _ents) {
             var loc = _loc.get(ent);
-            loc.position.x = _rand.GetFloatIn(0, 1200);
-            loc.position.y = _rand.GetFloatIn(0, 500);
+            loc.position.x = _rand.GetFloatIn(0, 1300);
+            loc.position.y = _rand.GetFloatIn(0, 700);
         }
     }
 }
