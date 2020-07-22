@@ -1,5 +1,8 @@
 package khaterizer.graphics;
 
+import kha.graphics4.PipelineState;
+import kha.Shaders;
+import kha.graphics4.hxsl.Shader;
 import ecx.types.EntityVector;
 import khaterizer.ecs.systems.graphics.RenderSystem;
 import khaterizer.ecs.components.graphics.Renderable;
@@ -22,16 +25,13 @@ class Renderer {
         //---It needs to be used here since trying to do rendering from within ECX's System loop effectively locks the 
         //---visible framerate to the system update rate, which is not desirable. 
         //---Example: We do not want to be hard locked to 60 logical frames without being able to interpolate info up to 120 visible frames
-        world = Khaterizer.world;
-        spatials = world.resolve(Spatial);
-        renderables = world.resolve(RenderSystem).renderables;
+        spatials = Khaterizer.world.resolve(Spatial);
+        renderables = Khaterizer.world.resolve(RenderSystem).renderables;
         //-------------------------------------------------------------------
 
         backbuffer = Image.createRenderTarget(backbufferWidth, backbufferHeight);
     }
 
-    //This could instead take a list of draw functions, supplied by various ecx render systems
-    //and then simply call those functions. Should work, right?
     public function render():Image {
         final g2 = backbuffer.g2;
 

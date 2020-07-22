@@ -4,7 +4,7 @@ import haxe.Timer;
 import kha.Scheduler;
 
 /**
-    Generic timer that can be updated to `measure` the time differential.
+    Timer that can be updated to `measure` the time differential.
 
     Contains separate retrieval functions for atomized and real time from Kha's Scheduler.
 **/
@@ -73,10 +73,5 @@ class TimerUtil {
     **/
     public inline function currentReal():Float {
         return Scheduler.realTime();
-    }
-
-    public static function delay(func:Void -> Void, time_seconds:Float):Void {
-        var ms = Std.int(Math.round(time_seconds));
-        Timer.delay(func, ms);
     }
 }
