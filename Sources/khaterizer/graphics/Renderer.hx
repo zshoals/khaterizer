@@ -1,5 +1,6 @@
 package khaterizer.graphics;
 
+import kha.System;
 import ecx.Service;
 import kha.graphics4.PipelineState;
 import kha.Shaders;
@@ -25,6 +26,8 @@ class Renderer extends Service {
 
     public function init(backbufferWidth:Int, backbufferHeight:Int) {
         backbuffer = Image.createRenderTarget(backbufferWidth, backbufferHeight);
+        kha.Window.get(0).notifyOnResize((x:Int, y:Int) -> changeBackbufferSize(x, y));
+        
         renderables = renderSystem.renderables;
     }
 
