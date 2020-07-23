@@ -37,7 +37,6 @@ enum abstract SystemPriority(Int) to Int {
 }
 
 class Khaterizer {
-
     public static var world:World;
     public static var debugFont:Font;
     public static var game:Application;
