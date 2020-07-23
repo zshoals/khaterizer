@@ -1,5 +1,7 @@
 package khaterizer.ecs.services;
 
-class EngineConfiguration {
-    
+import ecx.Service;
+
+class EngineConfiguration extends Service {
+    public function new() {}
 }

@@ -1,5 +1,6 @@
-package khaterizer;
+package khaterizer.ecs.services;
 
+import ecx.Service;
 import kha.Assets;
 import kha.Display;
 import kha.Window;
@@ -16,10 +17,9 @@ import khaterizer.input.Keypress;
 import kha.input.KeyCode;
 import kha.input.Keyboard;
 
-class Application {
-    var world = Khaterizer.world;
-
-    var renderer:Renderer;
+class Application extends Service {
+    var renderer:Wire<Renderer>;
+    var windowConfig:Wire<WindowConfiguration>;
 
     var drawTimer:TimerUtil;
     var fpsTimer:TimerUtil;
@@ -27,15 +27,15 @@ class Application {
     var renderCycles:Int;
     var fpsResult:Int;
 
-    public function new() {
+    public function new() {}
+
+    override function initialize() {
         drawTimer = new TimerUtil();
         fpsTimer = new TimerUtil();
         
         recentFPS = [];
         renderCycles = 0;
         fpsResult = 0;
-
-        renderer = new Renderer(Display.primary.width, Display.primary.height);
     }
 
     public function update():Void {

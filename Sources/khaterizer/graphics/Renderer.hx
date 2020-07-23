@@ -1,5 +1,6 @@
 package khaterizer.graphics;
 
+import ecx.Service;
 import kha.graphics4.PipelineState;
 import kha.Shaders;
 import kha.graphics4.hxsl.Shader;
@@ -13,23 +14,18 @@ import kha.Image;
 import kha.graphics2.Graphics;
 import khaterizer.types.RenderPackage;
 
-class Renderer {
+class Renderer extends Service {
     var backbuffer:Image;
-
-    var world:World;
-    var spatials:Spatial;
+    
+    var spatials:Wire<Spatial>;
+    var renderSystem:Wire<RenderSystem>;
     var renderables:EntityVector;
 
-    public function new(backbufferWidth:Int, backbufferHeight:Int) {
-        //---Let's not make this a habit, world.resolve should only be used in really weird situations like this
-        //---It needs to be used here since trying to do rendering from within ECX's System loop effectively locks the 
-        //---visible framerate to the system update rate, which is not desirable. 
-        //---Example: We do not want to be hard locked to 60 logical frames without being able to interpolate info up to 120 visible frames
-        spatials = Khaterizer.world.resolve(Spatial);
-        renderables = Khaterizer.world.resolve(RenderSystem).renderables;
-        //-------------------------------------------------------------------
+    public function new() {}
 
+    public function init(backbufferWidth:Int, backbufferHeight:Int) {
         backbuffer = Image.createRenderTarget(backbufferWidth, backbufferHeight);
+        renderables = renderSystem.renderables;
     }
 
     public function render():Image {
