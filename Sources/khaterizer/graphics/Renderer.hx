@@ -1,19 +1,18 @@
 package khaterizer.graphics;
 
-import kha.System;
 import ecx.Service;
-import kha.graphics4.PipelineState;
-import kha.Shaders;
-import kha.graphics4.hxsl.Shader;
-import ecx.types.EntityVector;
-import khaterizer.ecs.systems.graphics.RenderSystem;
-import khaterizer.ecs.components.graphics.Renderable;
-import khaterizer.ecs.components.Spatial;
 import ecx.World;
+import ecx.types.EntityVector;
 import kha.Color;
 import kha.Image;
+import kha.Shaders;
+import kha.System;
 import kha.graphics2.Graphics;
-import khaterizer.types.RenderPackage;
+import kha.graphics4.PipelineState;
+import kha.graphics4.hxsl.Shader;
+import khaterizer.ecs.components.Spatial;
+import khaterizer.ecs.components.graphics.Renderable;
+import khaterizer.ecs.systems.graphics.RenderSystem;
 
 class Renderer extends Service {
     var backbuffer:Image;
@@ -26,6 +25,9 @@ class Renderer extends Service {
 
     public function init(backbufferWidth:Int, backbufferHeight:Int) {
         backbuffer = Image.createRenderTarget(backbufferWidth, backbufferHeight);
+
+        //This needs to be handled better, since the backbuffer is not necessarily always the size of the window
+        //we may want it smaller or something sometimes
         kha.Window.get(0).notifyOnResize((x:Int, y:Int) -> changeBackbufferSize(x, y));
         
         renderables = renderSystem.renderables;

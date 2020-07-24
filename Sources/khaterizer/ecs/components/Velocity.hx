@@ -1,7 +1,7 @@
 package khaterizer.ecs.components;
 
 import ecx.AutoComp;
-import kha.math.Vector2;
+import khaterizer.math.Vector2;
 
 class Velocity extends AutoComp<VelocityData>{}
 

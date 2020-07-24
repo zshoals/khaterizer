@@ -1,30 +1,31 @@
 package khaterizer;
 
+import ecx.Engine;
 import ecx.Service;
+import ecx.Wire;
+import ecx.World;
+import ecx.WorldConfig;
 import haxe.Timer;
-import kha.Display;
-import kha.Window;
-import kha.WindowOptions;
-import kha.Font;
-import khaterizer.util.TimerUtil;
 import kha.Assets;
+import kha.Display;
+import kha.Font;
 import kha.Framebuffer;
 import kha.FramebufferOptions;
 import kha.Scheduler;
 import kha.System;
-import ecx.WorldConfig;
-import ecx.World;
-import ecx.Engine;
-import ecx.Wire;
-import khaterizer.types.InitializationOptions;
+import kha.Window;
+import kha.WindowOptions;
+import khaterizer.ecs.blueprints.*;
 import khaterizer.ecs.components.*;
 import khaterizer.ecs.components.collision.*;
 import khaterizer.ecs.components.graphics.*;
+import khaterizer.ecs.services.*;
 import khaterizer.ecs.systems.*;
 import khaterizer.ecs.systems.graphics.*;
-import khaterizer.ecs.services.*;
 import khaterizer.graphics.*;
+import khaterizer.types.InitializationOptions;
 import khaterizer.util.*;
+import khaterizer.util.TimerUtil;
 
 enum abstract SystemPriority(Int) to Int {
     var Preupdate = 1;
@@ -38,12 +39,13 @@ enum abstract SystemPriority(Int) to Int {
 
 class Khaterizer {
     public static var world:World;
-    public static var debugFont:Font;
     public static var game:Application;
+    
+    public static var debugFont:Font;
 
     public static function initialize(options:InitializationOptions, plugins:Array<WorldConfig>):Void {
-        //This must occur before Kha does anything, lest very bad things happen
-        startWorld(plugins, options.entityCapacity);
+        //This must occur before Kha does anything, otherwise we're doomed
+        world = buildWorld(plugins, options.entityCapacity);
         //==================
         
         //We must use world.resolve here to access services
@@ -60,10 +62,10 @@ class Khaterizer {
 
         windowConfig.setWindowSize(options.windowWidth, options.windowHeight);
 
-        windowConfig.setWindowMinimizable(true);
-        windowConfig.setWindowMaximizable(true);
-        windowConfig.setWindowResizable(true);
-        windowConfig.setWindowOnTop(false);
+        windowConfig.setWindowMinimizable(options.windowMinimizable);
+        windowConfig.setWindowMaximizable(options.windowMaximizable);
+        windowConfig.setWindowResizable(options.windowResizable);
+        windowConfig.setWindowOnTop(options.windowOnTop);
 
         final windowOptions:WindowOptions = {
             mode: windowConfig.windowMode,
@@ -96,6 +98,7 @@ class Khaterizer {
                 final updateFrequency = 1 / options.updateRate;
 
                 game = world.resolve(Application);
+                //Renderer needs to be started here but we can retrieve it through Wire later if need be
                 var renderer = world.resolve(Renderer);
                 renderer.init(windowConfig.windowWidth, windowConfig.windowHeight);
 
@@ -105,7 +108,7 @@ class Khaterizer {
         );
     }
 
-    static inline function startWorld(plugins:Array<WorldConfig>, capacity:Int):Void {
+    static inline function buildWorld(plugins:Array<WorldConfig>, capacity:Int):World {
         var config = new WorldConfig();
 
         //==Add any supplied Plugins==
@@ -129,7 +132,7 @@ class Khaterizer {
         #end
 
         //==Initialize==
-        world = Engine.createWorld(config, capacity);
+        return Engine.createWorld(config, capacity);
     }
 
     static inline function getDefineStrings():Array<String> {

@@ -1,8 +1,6 @@
-package khaterizer.util;
+package khaterizer.ecs.blueprints;
 
-import ecx.Entity;
 import ecx.Service;
-import ecx.Wire;
 import khaterizer.ecs.components.Spatial;
 import khaterizer.ecs.components.graphics.Renderable;
 

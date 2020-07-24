@@ -22,11 +22,7 @@ class WindowConfiguration extends Service {
 
     public function new() {}
 
-    //Engine-wide configuration commands
-    //These should really all be moved to some sort of config class
-
     //We'll never use more than one window amirite
-    //can't wait for this to be annoying later
     public function setWindowSize(width:Int, height:Int):Void {
         windowWidth = width;
         windowHeight = height;
@@ -65,25 +61,21 @@ class WindowConfiguration extends Service {
     }
 
     /**
-        Deprecated. Non-functional as this feature is not currently operational in Kha
+        Non-functional as this feature is not currently operational in Kha
     **/
-    @:deprecated
     public function setWindowRefreshRate(rate:Int):Void {}
 
     /**
         Applies all Khaterizer window settings that have been set through setWindow commands to the window.
 
-        They will not be applied until this command is run, and must be used after the Window is initialized.
+        They will not be applied until this command is run. This can only used after the Window is initialized.
     **/
     public function applyWindowSettings():Void {
         final window = Window.get(0);
+        //Change Framebuffer doesn't work
         //window.changeFramebuffer({frequency: _options.refreshRate, verticalSync: verticalSynced});
         window.changeWindowFeatures(addWindowFeatures());
         window.title = windowTitle;
-
-        //Hack. Fixes window lockup on feature change, lol.
-        //window.mode = windowMode;
-
     }
 
     private function addWindowFeatures():WindowFeatures {

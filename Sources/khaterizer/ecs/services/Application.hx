@@ -1,21 +1,21 @@
 package khaterizer.ecs.services;
 
-import ecx.Service;
-import kha.Assets;
-import kha.Display;
-import kha.Window;
 import ecx.Engine;
+import ecx.Service;
 import ecx.World;
 import ecx.WorldConfig;
-import kha.graphics2.Graphics;
-import kha.Framebuffer;
+import kha.Assets;
 import kha.Color;
+import kha.Display;
+import kha.Framebuffer;
 import kha.Scheduler;
-import khaterizer.graphics.Renderer;
-import khaterizer.util.TimerUtil;
-import khaterizer.input.Keypress;
+import kha.Window;
+import kha.graphics2.Graphics;
 import kha.input.KeyCode;
 import kha.input.Keyboard;
+import khaterizer.graphics.Renderer;
+import khaterizer.input.Keypress;
+import khaterizer.util.TimerUtil;
 
 class Application extends Service {
     var renderer:Wire<Renderer>;

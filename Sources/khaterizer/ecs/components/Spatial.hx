@@ -1,6 +1,6 @@
 package khaterizer.ecs.components;
 
-import kha.math.Vector2;
+import khaterizer.math.Vector2;
 import ecx.AutoComp;
 
 class Spatial extends AutoComp<SpatialData>{}

@@ -1,15 +1,13 @@
 package khaterizer.ecs.systems;
 
-import khaterizer.ecs.components.graphics.Renderable;
-import kha.math.Vector2;
-import kha.math.Random;
 import ecx.System;
-
-import khaterizer.ecs.components.collision.CollisionRect;
+import khaterizer.ecs.blueprints.Spammer;
 import khaterizer.ecs.components.Rect;
 import khaterizer.ecs.components.Spatial;
-
-import khaterizer.util.Spammer;
+import khaterizer.ecs.components.collision.CollisionRect;
+import khaterizer.ecs.components.graphics.Renderable;
+import khaterizer.math.Random;
+import khaterizer.math.Vector2;
 
 
 class TesterSystem extends System {
@@ -29,7 +27,7 @@ class TesterSystem extends System {
     override function update() {
         if (_firstRun) {
             for (i in 0...60000) _spam.addRect(_rand.GetFloatIn(0, 1300), _rand.GetFloatIn(0, 700), 5, 5);
-            //Do not remove this fucking line retard
+            //Do not remove this fucking line
             _firstRun = false;
         }
 
