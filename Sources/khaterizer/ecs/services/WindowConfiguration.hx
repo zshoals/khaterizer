@@ -4,6 +4,8 @@ import ecx.Service;
 import kha.Window;
 import kha.WindowOptions;
 
+typedef ResizeMethod = (x:Int, y:Int) -> Void;
+
 class WindowConfiguration extends Service {
     public var verticalSynced(default, null):Bool;
     public var refreshRate(default, null):Int;
@@ -20,7 +22,37 @@ class WindowConfiguration extends Service {
     public var windowBorderless(default, null):Bool;
     public var windowOnTop(default, null):Bool;
 
+    private var resizeCallbacks:Array<ResizeMethod>;
+
     public function new() {}
+
+    override function initialize() {
+        resizeCallbacks = [];
+
+        Window.get(0).notifyOnResize((x:Int, y:Int) -> {
+            windowWidth = x;
+            windowHeight = y;
+            callResizeCallbacks(windowWidth, windowHeight);
+        });
+    }
+
+    public function notifyOnResize(callback:ResizeMethod):Void {
+        if (callback != null) {
+            resizeCallbacks.push(callback);
+        }
+    }
+
+    public function removeResizeNotifier(callback:ResizeMethod):Void {
+        if (callback != null) {
+            resizeCallbacks.remove(callback);
+        }
+    }
+
+    private function callResizeCallbacks(x:Int, y:Int):Void {
+        for (cb in resizeCallbacks) {
+            cb(x, y);
+        }
+    }
 
     //We'll never use more than one window amirite
     public function setWindowSize(width:Int, height:Int):Void {
@@ -76,6 +108,7 @@ class WindowConfiguration extends Service {
         //window.changeFramebuffer({frequency: _options.refreshRate, verticalSync: verticalSynced});
         window.changeWindowFeatures(addWindowFeatures());
         window.title = windowTitle;
+        callResizeCallbacks(windowWidth, windowHeight);
     }
 
     private function addWindowFeatures():WindowFeatures {

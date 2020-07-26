@@ -1,5 +1,6 @@
 package khaterizer.ecs.services;
 
+import kha.Scaler;
 import ecx.Engine;
 import ecx.Service;
 import ecx.World;
@@ -53,7 +54,13 @@ class Application extends Service {
 
         g2.begin();
         g2.color = Color.White;
+
+        #if kha_js
         g2.drawImage(backbuffer, 0, 0);
+        #else
+        //We're stuck to G2 if we use Scaler.scale
+        Scaler.scale(backbuffer, frames[0], kha.ScreenRotation.RotationNone);
+        #end
         g2.end();
 
         drawTimer.update();

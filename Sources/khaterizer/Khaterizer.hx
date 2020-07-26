@@ -44,43 +44,29 @@ class Khaterizer {
     public static var debugFont:Font;
 
     public static function initialize(options:InitializationOptions, plugins:Array<WorldConfig>):Void {
-        //This must occur before Kha does anything, otherwise we're doomed
-        world = buildWorld(plugins, options.entityCapacity);
-        //==================
-        
-        //We must use world.resolve here to access services
-        //Since we cannot extend Khaterizer as a service without some weird circular dependency situation, I think
-        var engineConfig = world.resolve(EngineConfiguration);
-        var windowConfig = world.resolve(WindowConfiguration);
+        //We're not going to talk about this
+        final resize = options.windowResizable ? WindowFeatures.FeatureResizable : WindowFeatures.None;
+        final min = options.windowMinimizable ? WindowFeatures.FeatureMinimizable : WindowFeatures.None;
+        final max = options.windowMaximizable ? WindowFeatures.FeatureMaximizable : WindowFeatures.None;
+        final borderless = options.windowBorderless ? WindowFeatures.FeatureBorderless : WindowFeatures.None;
+        final onTop = options.windowOnTop ? WindowFeatures.FeatureOnTop : WindowFeatures.None;
 
-        windowConfig.setWindowVerticalSync(options.verticalSync);
-        windowConfig.setWindowRefreshRate(options.refreshRate);
-
-        windowConfig.setWindowTitle(options.title);
-        windowConfig.setWindowMode(options.windowMode);
-        windowConfig.setWindowBorderless(options.windowBorderless);
-
-        windowConfig.setWindowSize(options.windowWidth, options.windowHeight);
-
-        windowConfig.setWindowMinimizable(options.windowMinimizable);
-        windowConfig.setWindowMaximizable(options.windowMaximizable);
-        windowConfig.setWindowResizable(options.windowResizable);
-        windowConfig.setWindowOnTop(options.windowOnTop);
+        final features:Null<WindowFeatures> = (resize | min | max | borderless | onTop);
 
         final windowOptions:WindowOptions = {
-            mode: windowConfig.windowMode,
-            windowFeatures: @:privateAccess windowConfig.addWindowFeatures(),
+            mode: options.windowMode,
+            windowFeatures: features,
         }
         
         final fbOptions:FramebufferOptions = {
-            frequency: windowConfig.refreshRate,
-            verticalSync: windowConfig.verticalSynced
+            frequency: options.refreshRate,
+            verticalSync: options.verticalSync
         }
 
         final systemOptions:SystemOptions = {
-            title: windowConfig.windowTitle,
-            width: windowConfig.windowWidth,
-            height: windowConfig.windowHeight,
+            title: options.title,
+            width: options.windowWidth,
+            height: options.windowHeight,
             framebuffer: fbOptions,
             window: windowOptions
         }
@@ -91,18 +77,43 @@ class Khaterizer {
             systemOptions,
             (_) -> Assets.loadFont(options.debugFontName, (font) -> {
                 debugFont = font;
+
+                world = buildWorld(plugins, options.entityCapacity);
+
+                //We must use world.resolve here to access services
+                //Since we cannot extend Khaterizer as a service without some weird circular dependency situation, I think
+                var engineConfig = world.resolve(EngineConfiguration);
+                var windowConfig = world.resolve(WindowConfiguration);
+        
+                //To get things into ECX we have to set the window stuff twice
+                //Not all window settings can be properly changed after Kha begins (vsync)
+                windowConfig.setWindowVerticalSync(options.verticalSync);
+                windowConfig.setWindowRefreshRate(options.refreshRate);
+
+                windowConfig.setWindowTitle(options.title);
+                windowConfig.setWindowMode(options.windowMode);
+                windowConfig.setWindowBorderless(options.windowBorderless);
+
+                windowConfig.setWindowSize(options.windowWidth, options.windowHeight);
+        
+                windowConfig.setWindowMinimizable(options.windowMinimizable);
+                windowConfig.setWindowMaximizable(options.windowMaximizable);
+                windowConfig.setWindowResizable(options.windowResizable);
+                windowConfig.setWindowOnTop(options.windowOnTop);
                 
                 #if !khaterizer_unsafe_update_rates
                 assert(options.updateRate > 0 && options.updateRate <= 300, "InitializationOptions update rate is very low or very high. Use the khafile define khaterizer_unsafe_update_rates to ignore this restriction.");
                 #end
-                final updateFrequency = 1 / options.updateRate;
+                
+                var deltaTime = world.resolve(DeltaTime);
+                deltaTime.setTiming(1 / options.updateRate);
 
                 game = world.resolve(Application);
                 //Renderer needs to be started here but we can retrieve it through Wire later if need be
                 var renderer = world.resolve(Renderer);
                 renderer.init(windowConfig.windowWidth, windowConfig.windowHeight);
 
-                Scheduler.addTimeTask(function () { game.update(); }, 0, updateFrequency);
+                Scheduler.addTimeTask(function () { game.update(); }, 0, deltaTime.dt());
                 System.notifyOnFrames(function (frames) { game.render(frames);});
             }, (e:kha.AssetError) -> throw e)
         );
@@ -117,8 +128,9 @@ class Khaterizer {
         #if khaterizer_default_services_enabled
         //==Core Engine Services==
         config.add(new Application());
-        config.add(new Renderer());
         config.add(new WindowConfiguration());
+        config.add(new Renderer());
+        config.add(new DeltaTime());
 
         config.add(new Spammer());
         //==Core Engine Systems==
