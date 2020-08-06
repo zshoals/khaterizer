@@ -6,7 +6,10 @@ project.addSources('Sources');
 project.addLibrary('ecx-sh');
 project.addLibrary('ds');
 project.addLibrary('zui');
+project.addLibrary('hscript');
 
+//polygonal/ds @:generic flag, its presence means enabled
+project.addDefine('generic');
 project.addDefine('khaterizer_default_services_enabled');
 
 resolve(project);

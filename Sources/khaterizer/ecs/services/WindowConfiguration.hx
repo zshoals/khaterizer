@@ -54,6 +54,8 @@ class WindowConfiguration extends Service {
         }
     }
 
+    public function setWindowFullscreen():Void {} // TODO: Fill me out later when you're not tired
+
     //We'll never use more than one window amirite
     public function setWindowSize(width:Int, height:Int):Void {
         windowWidth = width;

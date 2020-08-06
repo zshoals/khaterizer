@@ -1,5 +1,6 @@
 package khaterizer.ecs.services;
 
+import kha.math.Random;
 import kha.Scaler;
 import ecx.Engine;
 import ecx.Service;
@@ -27,6 +28,7 @@ class Application extends Service {
     var recentFPS:Array<Float>;
     var renderCycles:Int;
     var fpsResult:Int;
+    var rand = new khaterizer.math.Random(1222222221);
 
     public function new() {}
 
@@ -44,8 +46,11 @@ class Application extends Service {
             @:privateAccess system.update();
             world.invalidate();
         }
+
+        trace(rand.Get());
     }
 
+    //Pass this data into the renderer instead of doing work here
     public function render(frames: Array<Framebuffer>):Void {
         drawTimer.update();
 
@@ -56,6 +61,7 @@ class Application extends Service {
         g2.color = Color.White;
 
         #if kha_js
+        //Screw it, don't worry about scaling anything on HTML5 and leave it as a static sized window
         g2.drawImage(backbuffer, 0, 0);
         #else
         //We're stuck to G2 if we use Scaler.scale

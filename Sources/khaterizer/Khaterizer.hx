@@ -75,7 +75,8 @@ class Khaterizer {
 
         System.start(
             systemOptions,
-            (_) -> Assets.loadFont(options.debugFontName, (font) -> {
+            (_) -> Assets.loadFont(options.debugFontName, (font) ->
+                Assets.loadImage("pixel", (_) -> {
                 debugFont = font;
 
                 world = buildWorld(plugins, options.entityCapacity);
@@ -116,7 +117,7 @@ class Khaterizer {
                 Scheduler.addTimeTask(function () { game.update(); }, 0, deltaTime.dt());
                 System.notifyOnFrames(function (frames) { game.render(frames);});
             }, (e:kha.AssetError) -> throw e)
-        );
+        ));
     }
 
     static inline function buildWorld(plugins:Array<WorldConfig>, capacity:Int):World {

@@ -1,5 +1,6 @@
 package khaterizer.graphics;
 
+import kha.Assets;
 import khaterizer.ecs.services.WindowConfiguration;
 import kha.Window;
 import ecx.Service;
@@ -27,6 +28,8 @@ class Renderer extends Service {
     var window:Wire<WindowConfiguration>;
     var resizerFunction:ResizeMethod;
 
+    var img:Image;
+
     public function new() {}
 
     public function init(backbufferWidth:Int, backbufferHeight:Int):Void {
@@ -34,14 +37,17 @@ class Renderer extends Service {
 
         renderables = renderSystem.renderables;
 
-        final resizerFunction = (x:Int, y:Int) -> {
-            backbuffer.resize(Math.ceil(window.windowWidth / 2), Math.ceil(window.windowHeight / 2));
+        resizerFunction = (x:Int, y:Int) -> {
+            backbuffer.resize(window.windowWidth, window.windowHeight);
         }
         setBackbufferResizeMethod(resizerFunction);
 
         //Force the sizing strategy to be applied
         //I think this structure kind of sucks
         window.applyWindowSettings();
+
+        //Assets.loadImage("pixel", (image:Image) -> this.img = image);
+        img = Assets.images.pixel;
     }
 
     public function render():Image {
@@ -54,7 +60,8 @@ class Renderer extends Service {
             var x = pos.x;
             var y = pos.y;
             g2.color = Color.Green;
-            g2.fillRect(x, y, 1, 1);
+            //g2.fillRect(x, y, 1, 1);
+            g2.drawImage(img, x, y);
         }
 
         g2.end();

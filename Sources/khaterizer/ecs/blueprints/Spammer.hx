@@ -1,5 +1,6 @@
 package khaterizer.ecs.blueprints;
 
+import kha.math.Random;
 import ecx.Service;
 import khaterizer.ecs.components.Spatial;
 import khaterizer.ecs.components.graphics.Renderable;
