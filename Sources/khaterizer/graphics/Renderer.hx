@@ -1,5 +1,6 @@
 package khaterizer.graphics;
 
+import khaterizer.ecs.components.Rect;
 import kha.Assets;
 import khaterizer.ecs.services.WindowConfiguration;
 import kha.Window;
@@ -24,6 +25,7 @@ class Renderer extends Service {
     var spatials:Wire<Spatial>;
     var renderSystem:Wire<RenderSystem>;
     var renderables:EntityVector;
+    var rects:Wire<Rect>;
 
     var window:Wire<WindowConfiguration>;
     var resizerFunction:ResizeMethod;
@@ -57,11 +59,13 @@ class Renderer extends Service {
         
         for (r in renderables) {
             var pos = spatials.get(r).position;
+            var sizex = rects.get(r).width;
+            var sizey = rects.get(r).height;
             var x = pos.x;
             var y = pos.y;
             g2.color = Color.Green;
             //g2.fillRect(x, y, 1, 1);
-            g2.drawImage(img, x, y);
+            g2.drawScaledImage(img, x, y, sizex, sizey);
         }
 
         g2.end();

@@ -29,7 +29,7 @@ class TesterSystem extends System {
 
     override function update() {
         if (_firstRun) {
-            for (i in 0...100000) _spam.addRect(_rand.GetFloatIn(0, window.getCanvasWidth()), _rand.GetFloatIn(0, window.getCanvasHeight()), 5, 5);
+            for (i in 0...100000) _spam.addRect(_rand.GetFloatIn(0, window.getCanvasWidth()), _rand.GetFloatIn(0, window.getCanvasHeight()), 1, 1);
             //Do not remove this fucking line
             _firstRun = false;
         }

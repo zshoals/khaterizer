@@ -22,8 +22,9 @@ class Random {
         s3 = 0;
 
         //Immediately skip trash results
-        this.Get();
-        this.Get();
+        for (i in 0...10) {
+            this.Get();
+        }
     }
 
     public function Get(): Int {

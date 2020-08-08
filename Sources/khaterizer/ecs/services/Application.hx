@@ -28,7 +28,7 @@ class Application extends Service {
     var recentFPS:Array<Float>;
     var renderCycles:Int;
     var fpsResult:Int;
-    var rand = new khaterizer.math.Random(1222222221);
+    var rand = new khaterizer.math.Random(1337);
 
     public function new() {}
 
@@ -46,8 +46,6 @@ class Application extends Service {
             @:privateAccess system.update();
             world.invalidate();
         }
-
-        trace(rand.Get());
     }
 
     //Pass this data into the renderer instead of doing work here

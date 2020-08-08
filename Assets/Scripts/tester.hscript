@@ -1,0 +1,8 @@
+function die(x, y) {
+	var temp = x + y;
+	return temp;
+}
+
+var result = die(10, 20);
+
+result;

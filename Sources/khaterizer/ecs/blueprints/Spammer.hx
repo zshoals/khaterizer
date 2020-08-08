@@ -1,5 +1,6 @@
 package khaterizer.ecs.blueprints;
 
+import khaterizer.ecs.components.Rect;
 import kha.math.Random;
 import ecx.Service;
 import khaterizer.ecs.components.Spatial;
@@ -9,17 +10,20 @@ class Spammer extends Service {
 
     var _spatials:Wire<Spatial>;
     var _rends:Wire<Renderable>;
+    var rects:Wire<Rect>;
 
     public function new() {}
 
     public function addRect(x:Float, y:Float, width:Float, height:Float):Entity {
-        var rect = world.create();
+        var ent = world.create();
+        var rect = rects.create(ent);
+        rect.setup(width, height);
 
-        var s = _spatials.create(rect);
+        var s = _spatials.create(ent);
         s.setup(x, y);
 
-        _rends.create(rect);
+        _rends.create(ent);
 
-        return rect;
+        return ent;
     }
 }
