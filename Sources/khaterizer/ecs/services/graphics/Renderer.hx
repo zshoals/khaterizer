@@ -16,14 +16,14 @@ import kha.graphics4.PipelineState;
 import kha.graphics4.hxsl.Shader;
 import khaterizer.ecs.components.Spatial;
 import khaterizer.ecs.components.graphics.Renderable;
-import khaterizer.ecs.systems.graphics.RenderSystem;
+import khaterizer.ecs.systems.graphics.RenderProxySystem;
 import khaterizer.graphics.RenderTarget;
 
 class Renderer extends Service {
     var backbuffer:RenderTarget;
     
     var spatials:Wire<Spatial>;
-    var renderSystem:Wire<RenderSystem>;
+    var renderSystem:Wire<RenderProxySystem>;
     var renderables:EntityVector;
     var rects:Wire<Rect>;
 

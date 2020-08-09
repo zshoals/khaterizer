@@ -75,7 +75,7 @@ class Khaterizer extends Service {
     }
 
     private function start2(options:InitializationOptions, font:kha.Font):Void {
-        //This part is supposed to be handled within ECX, but we really need Kha started before we call initialize
+        //This part is supposed to be handled within ECX, but we really need Kha started before we call initialize on Services
         //So let's just hack it
         for(service in @:privateAccess world._orderedServices) {
             @:privateAccess service.initialize();

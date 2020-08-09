@@ -49,7 +49,7 @@ class Initializer {
         config.add(new Spammer());
         //==Core Engine Systems==
         config.add(new TesterSystem(), Update);
-        config.add(new RenderSystem(), Render + 1);
+        config.add(new RenderProxySystem(), Render + 1);
         //==Core Engine Components==
         config.add(new Rect());
         config.add(new CollisionRect());

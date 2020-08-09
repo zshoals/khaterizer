@@ -36,6 +36,9 @@ class WindowConfiguration extends Service {
         });
     }
 
+    /**
+        Primarily used to scale RenderTargets in relation to the window in some way
+    **/
     public function notifyOnResize(callback:ResizeMethod):Void {
         if (callback != null) {
             resizeCallbacks.push(callback);
