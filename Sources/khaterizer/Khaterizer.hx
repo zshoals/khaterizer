@@ -27,38 +27,33 @@ import khaterizer.types.InitializationOptions;
 import khaterizer.util.*;
 import khaterizer.util.TimerUtil;
 
-enum abstract SystemPriority(Int) to Int {
-    var Preupdate = 1;
-    var Update = 100;
-    var Move = 200;
-    var ResolveCollisions = 300;
-    var StateMachines = 400;
-    var Animate = 500;
-    var Render = 600;
-}
+class Khaterizer extends Service {
+    var window:Wire<WindowConfiguration>;
+    var engine:Wire<EngineConfiguration>;
+    var deltaTime:Wire<DeltaTime>;
+    var game:Wire<Application>;
+    var renderer:Wire<Renderer>;
 
-class Khaterizer {
-    static var world:World;
-    static var game:Application;
+    public function new() {}
 
-    //Since you're inevitably going to look at this again and want to change it, let's clear up why things are done this way and not by making this class a Service
-    //If you want to initialize anything Kha specific when ECX starts, you can not use ECX's initialize() function anymore
-    //Because you'll be dependent on Kha starting first, which it can't because Kha needs to read from services within ECX (which needs to have been started) that have been configured
-    //This whole section is gross, but there's not a clean way to handle this problem that's obvious to me without figuring out ECX internals, which are a mystery
-    //The last attempt to uncover them resulted in VScode crashing completely :^)
-    public static function initialize(options:InitializationOptions, plugins:Array<WorldConfig>):Void {
-        //We're not going to talk about this
-        final resize = options.windowResizable ? WindowFeatures.FeatureResizable : WindowFeatures.None;
-        final min = options.windowMinimizable ? WindowFeatures.FeatureMinimizable : WindowFeatures.None;
-        final max = options.windowMaximizable ? WindowFeatures.FeatureMaximizable : WindowFeatures.None;
-        final borderless = options.windowBorderless ? WindowFeatures.FeatureBorderless : WindowFeatures.None;
-        final onTop = options.windowOnTop ? WindowFeatures.FeatureOnTop : WindowFeatures.None;
+    public function start(options:InitializationOptions):Void {
+        window.setWindowVerticalSync(options.verticalSync);
+        window.setWindowRefreshRate(options.refreshRate);
 
-        final features:Null<WindowFeatures> = (resize | min | max | borderless | onTop);
+        window.setWindowTitle(options.title);
+        window.setWindowMode(options.windowMode);
+        window.setWindowBorderless(options.windowBorderless);
+
+        window.setWindowSize(options.windowWidth, options.windowHeight);
+
+        window.setWindowMinimizable(options.windowMinimizable);
+        window.setWindowMaximizable(options.windowMaximizable);
+        window.setWindowResizable(options.windowResizable);
+        window.setWindowOnTop(options.windowOnTop);
 
         final windowOptions:WindowOptions = {
             mode: options.windowMode,
-            windowFeatures: features,
+            windowFeatures: @:privateAccess window.addWindowFeatures(),
         }
         
         final fbOptions:FramebufferOptions = {
@@ -79,78 +74,28 @@ class Khaterizer {
         System.start(
             systemOptions,
             (_) -> Assets.loadFont(options.debugFontName, (font) -> //Can we get an actual asset loader please Zan
-                Assets.loadImage("pixel", (_) -> {
-
-                world = buildWorld(plugins, options.entityCapacity);
-
-                //We must use world.resolve here to access services
-                //Since we cannot extend Khaterizer as a service without some weird circular dependency situation, I think
-                var engineConfig = world.resolve(EngineConfiguration);
-                var windowConfig = world.resolve(WindowConfiguration);
-
-                engineConfig.debugFont = font;
-        
-                //To get things into ECX we have to set the window stuff twice
-                //Not all window settings can be properly changed after Kha begins (vsync)
-                windowConfig.setWindowVerticalSync(options.verticalSync);
-                windowConfig.setWindowRefreshRate(options.refreshRate);
-
-                windowConfig.setWindowTitle(options.title);
-                windowConfig.setWindowMode(options.windowMode);
-                windowConfig.setWindowBorderless(options.windowBorderless);
-
-                windowConfig.setWindowSize(options.windowWidth, options.windowHeight);
-        
-                windowConfig.setWindowMinimizable(options.windowMinimizable);
-                windowConfig.setWindowMaximizable(options.windowMaximizable);
-                windowConfig.setWindowResizable(options.windowResizable);
-                windowConfig.setWindowOnTop(options.windowOnTop);
-                
-                #if !khaterizer_unsafe_update_rates
-                assert(options.updateRate > 0 && options.updateRate <= 300, "InitializationOptions update rate is very low or very high. Use the khafile define khaterizer_unsafe_update_rates to ignore this restriction.");
-                #end
-                
-                var deltaTime = world.resolve(DeltaTime);
-                deltaTime.setTiming(1 / options.updateRate);
-
-                game = world.resolve(Application);
-                //Renderer needs to be started here but we can retrieve it through Wire later if need be
-                var renderer = world.resolve(Renderer);
-                renderer.init(windowConfig.windowWidth, windowConfig.windowHeight);
-
-                Scheduler.addTimeTask(function () { game.update(); }, 0, deltaTime.dt());
-                System.notifyOnFrames(function (frames) { game.render(frames);});
-            }, (e:kha.AssetError) -> throw e)
-        ));
+                Assets.loadImage("pixel", (_) -> start2(options, font))));
     }
 
-    static inline function buildWorld(plugins:Array<WorldConfig>, capacity:Int):World {
-        var config = new WorldConfig();
+    private function start2(options:InitializationOptions, font:kha.Font):Void {
+        //This part is supposed to be handled within ECX, but we really need Kha started before we call initialize
+        //So let's just hack it
+        for(service in @:privateAccess world._orderedServices) {
+            @:privateAccess service.initialize();
+        }
 
-        //==Add any supplied Plugins==
-        for (plugin in plugins) config.include(plugin);
-
-        #if khaterizer_default_services_enabled
-        //==Core Engine Services==
-        config.add(new Application());
-        config.add(new WindowConfiguration());
-        config.add(new EngineConfiguration());
-        config.add(new Renderer());
-        config.add(new DeltaTime());
-
-        config.add(new Spammer());
-        //==Core Engine Systems==
-        config.add(new TesterSystem(), Update);
-        config.add(new RenderSystem(), Render + 1);
-        //==Core Engine Components==
-        config.add(new Rect());
-        config.add(new CollisionRect());
-        config.add(new Spatial());
-        config.add(new Renderable());
+        engine.debugFont = font;
+        
+        #if !khaterizer_unsafe_update_rates
+        assert(options.updateRate > 0 && options.updateRate <= 300, "InitializationOptions update rate is very low or very high. Use the khafile define khaterizer_unsafe_update_rates to ignore this restriction.");
         #end
+        deltaTime.setTiming(1 / options.updateRate);
 
-        //==Initialize==
-        return Engine.createWorld(config, capacity);
+        //Renderer needs to be started here but we can retrieve it through Wire later if need be
+        renderer.init(window.windowWidth, window.windowHeight);
+
+        Scheduler.addTimeTask(function () { game.update(); }, 0, deltaTime.dt());
+        System.notifyOnFrames(function (frames) { game.render(frames);});
     }
 
     static inline function getDefineStrings():Array<String> {

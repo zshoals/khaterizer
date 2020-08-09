@@ -18,6 +18,7 @@ import kha.input.Keyboard;
 import khaterizer.graphics.Renderer;
 import khaterizer.input.Keypress;
 import khaterizer.util.TimerUtil;
+import kha.System;
 
 class Application extends Service {
     var renderer:Wire<Renderer>;
@@ -31,9 +32,7 @@ class Application extends Service {
 
     var drawTimer:TimerUtil;
     public var backbufferRenderTime:Float;
-
-    var rand = new khaterizer.math.Random(1337);
-
+    
     public function new() {}
 
     override function initialize() {
