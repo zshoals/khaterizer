@@ -1,4 +1,4 @@
-package khaterizer.ecs.services;
+package khaterizer.ecs.services.graphics;
 
 import ecx.Service;
 import kha.Window;

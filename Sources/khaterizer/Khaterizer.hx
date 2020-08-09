@@ -1,5 +1,6 @@
 package khaterizer;
 
+import khaterizer.ecs.services.graphics.WindowConfiguration;
 import ecx.Engine;
 import ecx.Service;
 import ecx.Wire;
@@ -15,14 +16,10 @@ import kha.Scheduler;
 import kha.System;
 import kha.Window;
 import kha.WindowOptions;
-import khaterizer.ecs.blueprints.*;
-import khaterizer.ecs.components.*;
-import khaterizer.ecs.components.collision.*;
-import khaterizer.ecs.components.graphics.*;
 import khaterizer.ecs.services.*;
+import khaterizer.ecs.services.graphics.Renderer;
 import khaterizer.ecs.systems.*;
 import khaterizer.ecs.systems.graphics.*;
-import khaterizer.graphics.*;
 import khaterizer.types.InitializationOptions;
 import khaterizer.util.*;
 import khaterizer.util.TimerUtil;

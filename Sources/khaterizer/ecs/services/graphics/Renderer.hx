@@ -1,8 +1,8 @@
-package khaterizer.graphics;
+package khaterizer.ecs.services.graphics;
 
 import khaterizer.ecs.components.Rect;
 import kha.Assets;
-import khaterizer.ecs.services.WindowConfiguration;
+import khaterizer.ecs.services.graphics.WindowConfiguration;
 import kha.Window;
 import ecx.Service;
 import ecx.World;

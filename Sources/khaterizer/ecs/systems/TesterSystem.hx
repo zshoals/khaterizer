@@ -1,13 +1,13 @@
 package khaterizer.ecs.systems;
 
-import khaterizer.graphics.Renderer;
+import khaterizer.ecs.services.graphics.Renderer;
 import ecx.System;
 import khaterizer.ecs.blueprints.Spammer;
 import khaterizer.ecs.components.Rect;
 import khaterizer.ecs.components.Spatial;
 import khaterizer.ecs.components.collision.CollisionRect;
 import khaterizer.ecs.components.graphics.Renderable;
-import khaterizer.ecs.services.WindowConfiguration;
+import khaterizer.ecs.services.graphics.WindowConfiguration;
 import khaterizer.math.Random;
 import khaterizer.math.Vector2;
 

@@ -9,6 +9,7 @@ import khaterizer.ecs.components.*;
 import khaterizer.ecs.components.collision.*;
 import khaterizer.ecs.components.graphics.*;
 import khaterizer.ecs.services.*;
+import khaterizer.ecs.services.graphics.*;
 import khaterizer.ecs.systems.*;
 import khaterizer.ecs.systems.graphics.*;
 import khaterizer.graphics.*;
