@@ -38,11 +38,14 @@ enum abstract SystemPriority(Int) to Int {
 }
 
 class Khaterizer {
-    public static var world:World;
-    public static var game:Application;
-    
-    public static var debugFont:Font;
+    static var world:World;
+    static var game:Application;
 
+    //Since you're inevitably going to look at this again and want to change it, let's clear up why things are done this way and not by making this class a Service
+    //If you want to initialize anything Kha specific when ECX starts, you can not use ECX's initialize() function anymore
+    //Because you'll be dependent on Kha starting first, which it can't because Kha needs to read from services within ECX (which needs to have been started) that have been configured
+    //This whole section is gross, but there's not a clean way to handle this problem that's obvious to me without figuring out ECX internals, which are a mystery
+    //The last attempt to uncover them resulted in VScode crashing completely :^)
     public static function initialize(options:InitializationOptions, plugins:Array<WorldConfig>):Void {
         //We're not going to talk about this
         final resize = options.windowResizable ? WindowFeatures.FeatureResizable : WindowFeatures.None;
@@ -75,9 +78,8 @@ class Khaterizer {
 
         System.start(
             systemOptions,
-            (_) -> Assets.loadFont(options.debugFontName, (font) ->
+            (_) -> Assets.loadFont(options.debugFontName, (font) -> //Can we get an actual asset loader please Zan
                 Assets.loadImage("pixel", (_) -> {
-                debugFont = font;
 
                 world = buildWorld(plugins, options.entityCapacity);
 
@@ -85,6 +87,8 @@ class Khaterizer {
                 //Since we cannot extend Khaterizer as a service without some weird circular dependency situation, I think
                 var engineConfig = world.resolve(EngineConfiguration);
                 var windowConfig = world.resolve(WindowConfiguration);
+
+                engineConfig.debugFont = font;
         
                 //To get things into ECX we have to set the window stuff twice
                 //Not all window settings can be properly changed after Kha begins (vsync)
@@ -130,6 +134,7 @@ class Khaterizer {
         //==Core Engine Services==
         config.add(new Application());
         config.add(new WindowConfiguration());
+        config.add(new EngineConfiguration());
         config.add(new Renderer());
         config.add(new DeltaTime());
 

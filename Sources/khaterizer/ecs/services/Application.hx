@@ -22,12 +22,16 @@ import khaterizer.util.TimerUtil;
 class Application extends Service {
     var renderer:Wire<Renderer>;
     var windowConfig:Wire<WindowConfiguration>;
+    var engineConfig:Wire<EngineConfiguration>;
 
-    var drawTimer:TimerUtil;
     var fpsTimer:TimerUtil;
     var recentFPS:Array<Float>;
     var renderCycles:Int;
-    var fpsResult:Int;
+    public var framesPerSecond:Int;
+
+    var drawTimer:TimerUtil;
+    public var backbufferRenderTime:Float;
+
     var rand = new khaterizer.math.Random(1337);
 
     public function new() {}
@@ -38,7 +42,7 @@ class Application extends Service {
         
         recentFPS = [];
         renderCycles = 0;
-        fpsResult = 0;
+        framesPerSecond = 0;
     }
 
     public function update():Void {
@@ -67,17 +71,17 @@ class Application extends Service {
         #end
         g2.end();
 
-        drawTimer.update();
+        backbufferRenderTime = drawTimer.dtReal();
 
         if (fpsTimer.dtReal() > 1) {
             fpsTimer.update();
-            fpsResult = renderCycles;
+            framesPerSecond = renderCycles;
             renderCycles = 0;
         }
         else {
             renderCycles++;
         }
-
+        
         renderDebugMenu(g2);
     }
 
@@ -93,9 +97,9 @@ class Application extends Service {
         g2.fillRect(0, 0, 400, 100);
 
         g2.color = Color.White;
-        g2.font = Khaterizer.debugFont;
+        g2.font = engineConfig.debugFont;
         g2.fontSize = 24;
-        g2.drawString("Frames Per Second: " + fpsResult, 20, 20);
+        g2.drawString("Frames Per Second: " + framesPerSecond, 20, 20);
         g2.drawString("Backbuffer Render Time: " + calcFrametimeAverage(), 20, 40);
         g2.drawString("Fucking Squares on Screen: " + world.used, 20, 60);
 
@@ -103,8 +107,7 @@ class Application extends Service {
     }
 
     inline function calcFrametimeAverage():Float {
-        var lameFPS = drawTimer.measureReal();
-        recentFPS.push(lameFPS);
+        recentFPS.push(backbufferRenderTime);
         if (recentFPS.length >= 10) {
             recentFPS.shift();
         }
