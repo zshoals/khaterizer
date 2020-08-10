@@ -1,5 +1,6 @@
 package khaterizer.graphics;
 
+import kha.Scaler;
 import ecx.Service;
 import kha.graphics2.Graphics;
 import kha.Image;
@@ -65,7 +66,7 @@ class RenderTarget implements Canvas {
         this.resize(width, height);
     }
 
-    public function draw(canvas:Canvas):Void {
+    public function renderTo(canvas:Canvas):Void {
         final g = canvas.g2;
         final cWidth = canvas.width;
         final cHeight = canvas.height;
@@ -73,6 +74,9 @@ class RenderTarget implements Canvas {
         if (cWidth != previousCanvasWidth || cHeight != previousCanvasHeight) {
             previousCanvasWidth = cWidth;
             previousCanvasHeight = cHeight;
+            trace("Changed");
+
+            trace(this.baselineWidth + " " + this.baselineHeight);
 
             switch scaleStrategy {
                 case Grow:
@@ -81,14 +85,19 @@ class RenderTarget implements Canvas {
                     scaleGrowAndShrink(g, cWidth, cHeight);
                 case Shrink:
                     scaleShrink(g, cWidth, cHeight);
-                default: return;
+                case IntegerScale:
+                    scaleByInteger(canvas, cWidth, cHeight);
+                case None: //Don't modify the Render Target in any way
+                    return;
             }
         }
 
         g.drawImage(this.image, 0, 0);
     }
 
-    //TODO: This check isn't enough, still breaks if things stretch too much on one axis. Too tired to fix :(
+    //I think all of these need to be changed, or at least some do
+    //They actually need to scale the resultant image, not just resize the Render Target
+    //Cool effect anyway
     private inline function scaleGrow(g:Graphics, cWidth:Int, cHeight:Int):Void {
         if (cWidth > this.baselineWidth || cHeight > this.baselineHeight) {
             resize(cWidth, cHeight);
@@ -107,6 +116,18 @@ class RenderTarget implements Canvas {
     private inline function scaleShrink(g:Graphics, cWidth:Int, cHeight:Int):Void {
         if (cWidth < this.baselineWidth || cHeight < this.baselineHeight) {
             resize(cWidth, cHeight);
+        }
+        else {
+            resize(this.baselineWidth, this.baselineHeight);
+        }
+    }
+
+    //TODO: Currently not functional
+    //Technically works but the structure from earlier breaks it since we won't draw the backbuffer every frame
+    //Need a new approach here
+    private inline function scaleByInteger(g:Canvas, cWidth:Int, cHeight:Int):Void {
+        if (cWidth % this.baselineWidth == 0 && cHeight % this.baselineHeight == 0) {
+            Scaler.scale(this.getImage(), g, kha.ScreenRotation.RotationNone);
         }
         else {
             resize(this.baselineWidth, this.baselineHeight);

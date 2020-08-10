@@ -70,7 +70,7 @@ class Application extends Service {
         g2.begin();
         g2.color = Color.White;
 
-        renderer.backbuffer.draw(frames[0]);
+        renderer.backbuffer.renderTo(frames[0]);
 
         g2.end();
 

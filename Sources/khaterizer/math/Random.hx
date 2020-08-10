@@ -1,7 +1,5 @@
 package khaterizer.math;
 
-import haxe.Int64;
-
 /**
     Jury-rigged Implementation of xoshiro128** PRNG with kha.math.Random's interface.
 

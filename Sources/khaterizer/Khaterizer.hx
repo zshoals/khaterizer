@@ -86,7 +86,7 @@ class Khaterizer extends Service {
             @:privateAccess service.initialize();
         }
 
-        //Random.init(1337);
+        Random.init(1337);
 
         engine.debugFont = font;
         

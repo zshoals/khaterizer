@@ -1,5 +1,7 @@
 package khaterizer.ecs.systems;
 
+import khaterizer.graphics.Shader;
+import khaterizer.graphics.RenderTarget;
 import khaterizer.ecs.services.graphics.Renderer;
 import ecx.System;
 import khaterizer.ecs.blueprints.Spammer;
@@ -14,27 +16,31 @@ import khaterizer.math.Vector2;
 
 class TesterSystem extends System {
 
-    var _firstRun:Bool = true;
-    var _rand:Random;
+    var _firstRun:Bool;
+    var _rand:khaterizer.math.Random;
     var _loc:Wire<Spatial>;
     var _rend:Wire<Renderable>;
     var _spam:Wire<Spammer>;
     var _ents:Family<Spatial>;
     var window:Wire<Renderer>;
-    var count = 0;
+    var count:Int;
 
     public function new() {
-        //Absolutely NEVER PUT ANYTHING IN NEW when extending from Service, it absolutely shreds performance for some inexplicable reason
-        //Learned the hard way
+        //Welp, we're fucked
+        //This line of code inexplicably impacts performance on native MAJORLY
+        //It either needs to be placed inside initialize() or new(), and it WILL RANDOMLY CHANGE where it needs to be on compile
+        //Good luck :|
+        //new Random(9999);
     }
 
     override function initialize() {
-        _rand = new Random(1337);
+        _firstRun = true;
+        count = 0;
     }
 
     override function update() {
         if (_firstRun) {
-            for (i in 0...100000) _spam.addRect(_rand.GetFloatIn(0, window.getCanvasWidth()), _rand.GetFloatIn(0, window.getCanvasHeight()), 1, 1);
+            for (i in 0...100000) _spam.addRect(Random.getFloatIn(0, window.getCanvasWidth()), Random.getFloatIn(0, window.getCanvasHeight()), 1, 1);
             //Do not remove this fucking line
             _firstRun = false;
         }
@@ -48,8 +54,8 @@ class TesterSystem extends System {
         var accum = 0.0;
         for (ent in _ents) {
             var loc = _loc.get(ent);
-            loc.position.x = _rand.GetFloatIn(0, window.getCanvasWidth());
-            loc.position.y = _rand.GetFloatIn(0, window.getCanvasHeight());
+            loc.position.x = Random.getFloatIn(0, window.getCanvasWidth());
+            loc.position.y = Random.getFloatIn(0, window.getCanvasHeight());
         }
     }
 }
