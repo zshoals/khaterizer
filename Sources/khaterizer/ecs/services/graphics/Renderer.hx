@@ -20,7 +20,7 @@ import khaterizer.ecs.systems.graphics.RenderProxySystem;
 import khaterizer.graphics.RenderTarget;
 
 class Renderer extends Service {
-    var backbuffer:RenderTarget;
+    public var backbuffer:RenderTarget;
     
     var spatials:Wire<Spatial>;
     var renderSystem:Wire<RenderProxySystem>;
@@ -35,18 +35,18 @@ class Renderer extends Service {
     public function new() {}
 
     public function init(backbufferWidth:Int, backbufferHeight:Int):Void {
-        backbuffer = new RenderTarget(backbufferWidth, backbufferHeight);
+        backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, GrowAndShrink);
 
         renderables = renderSystem.renderables;
 
-        resizerFunction = (x:Int, y:Int) -> {
-            backbuffer.resize(window.windowWidth, window.windowHeight);
-        }
-        setBackbufferResizeMethod(resizerFunction);
+        // resizerFunction = (x:Int, y:Int) -> {
+        //     backbuffer.resize(window.windowWidth, window.windowHeight);
+        // }
+        // setBackbufferResizeMethod(resizerFunction);
 
         //Force the sizing strategy to be applied
         //I think this structure kind of sucks
-        window.applyWindowSettings();
+        //window.applyWindowSettings();
 
         //Assets.loadImage("pixel", (image:Image) -> this.img = image);
         img = Assets.images.pixel;

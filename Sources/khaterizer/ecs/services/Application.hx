@@ -1,6 +1,6 @@
 package khaterizer.ecs.services;
 
-import kha.math.Random;
+import khaterizer.math.Random;
 import kha.Scaler;
 import ecx.Engine;
 import ecx.Service;
@@ -33,12 +33,16 @@ class Application extends Service {
 
     var drawTimer:TimerUtil;
     public var backbufferRenderTime:Float;
+
+    var updateTimer:TimerUtil;
+    public var updateTime:Float;
     
     public function new() {}
 
     override function initialize() {
         drawTimer = new TimerUtil();
         fpsTimer = new TimerUtil();
+        updateTimer = new TimerUtil();
         
         recentFPS = [];
         renderCycles = 0;
@@ -46,10 +50,14 @@ class Application extends Service {
     }
 
     public function update():Void {
+        updateTimer.update();
+
         for(system in world.systems()) {
             @:privateAccess system.update();
             world.invalidate();
         }
+
+        updateTime = updateTimer.dtReal();
     }
 
     //Pass this data into the renderer instead of doing work here
@@ -62,13 +70,8 @@ class Application extends Service {
         g2.begin();
         g2.color = Color.White;
 
-        #if kha_js
-        //Screw it, don't worry about scaling anything on HTML5 and leave it as a static sized window
-        g2.drawImage(backbuffer, 0, 0);
-        #else
-        //We're stuck to G2 if we use Scaler.scale
-        Scaler.scale(backbuffer, frames[0], kha.ScreenRotation.RotationNone);
-        #end
+        renderer.backbuffer.draw(frames[0]);
+
         g2.end();
 
         backbufferRenderTime = drawTimer.dtReal();
@@ -81,7 +84,6 @@ class Application extends Service {
         else {
             renderCycles++;
         }
-        
         renderDebugMenu(g2);
     }
 
@@ -94,14 +96,15 @@ class Application extends Service {
         g2.begin(false);
 
         g2.color = Color.Black;
-        g2.fillRect(0, 0, 400, 100);
+        g2.fillRect(0, 0, 400, 120);
 
         g2.color = Color.White;
         g2.font = engineConfig.debugFont;
-        g2.fontSize = 24;
+        g2.fontSize = 22;
         g2.drawString("Frames Per Second: " + framesPerSecond, 20, 20);
         g2.drawString("Backbuffer Render Time: " + calcFrametimeAverage(), 20, 40);
-        g2.drawString("Fucking Squares on Screen: " + world.used, 20, 60);
+        g2.drawString("Logical Update Time: " + MathUtil.truncate(updateTime, 6), 20, 60);
+        g2.drawString("Fucking Squares on Screen: " + world.used, 20, 80);
 
         g2.end();
     }
@@ -113,7 +116,7 @@ class Application extends Service {
         }
         var avgFPS = 0.0;
         for (i in recentFPS) avgFPS += i;
-        avgFPS = MathUtil.truncate(avgFPS / recentFPS.length, 6);
+        avgFPS = MathUtil.truncate(avgFPS / recentFPS.length, 8);
         return avgFPS;
     }
 }

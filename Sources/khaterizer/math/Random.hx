@@ -21,7 +21,7 @@ class Random {
         s2 = 0;
         s3 = 0;
 
-        //Immediately skip trash results
+        //Immediately skip some trash results
         for (i in 0...10) {
             this.Get();
         }

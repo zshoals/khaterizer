@@ -1,6 +1,5 @@
 package khaterizer;
 
-import khaterizer.ecs.services.graphics.WindowConfiguration;
 import ecx.Engine;
 import ecx.Service;
 import ecx.Wire;
@@ -18,13 +17,19 @@ import kha.Window;
 import kha.WindowOptions;
 import khaterizer.ecs.services.*;
 import khaterizer.ecs.services.graphics.Renderer;
+import khaterizer.ecs.services.graphics.WindowConfiguration;
 import khaterizer.ecs.systems.*;
 import khaterizer.ecs.systems.graphics.*;
+import khaterizer.math.Random;
 import khaterizer.types.InitializationOptions;
 import khaterizer.util.*;
 import khaterizer.util.TimerUtil;
 
 class Khaterizer extends Service {
+    //Only reference this world instance for things lying OUTSIDE ECX
+    //This is just a workaround for some of the awkwardness of ECX when it comes to mixing non-ECX and ECX things.
+    public static var gWorld:World;
+
     var window:Wire<WindowConfiguration>;
     var engine:Wire<EngineConfiguration>;
     var deltaTime:Wire<DeltaTime>;
@@ -80,6 +85,8 @@ class Khaterizer extends Service {
         for(service in @:privateAccess world._orderedServices) {
             @:privateAccess service.initialize();
         }
+
+        //Random.init(1337);
 
         engine.debugFont = font;
         

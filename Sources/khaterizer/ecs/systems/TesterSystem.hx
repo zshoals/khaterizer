@@ -24,12 +24,17 @@ class TesterSystem extends System {
     var count = 0;
 
     public function new() {
+        //Absolutely NEVER PUT ANYTHING IN NEW when extending from Service, it absolutely shreds performance for some inexplicable reason
+        //Learned the hard way
+    }
+
+    override function initialize() {
         _rand = new Random(1337);
     }
 
     override function update() {
         if (_firstRun) {
-            for (i in 0...10000) _spam.addRect(_rand.GetFloatIn(0, window.getCanvasWidth()), _rand.GetFloatIn(0, window.getCanvasHeight()), 1, 1);
+            for (i in 0...100000) _spam.addRect(_rand.GetFloatIn(0, window.getCanvasWidth()), _rand.GetFloatIn(0, window.getCanvasHeight()), 1, 1);
             //Do not remove this fucking line
             _firstRun = false;
         }
