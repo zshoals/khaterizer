@@ -84,26 +84,6 @@ class RenderTarget implements Canvas {
         final cWidth = canvas.width;
         final cHeight = canvas.height;
 
-        var mouse = Mouse.get(0);
-        
-        var onMouseDown = (button:Int, x:Int, y:Int) -> {
-            this.setResolution(cWidth, cHeight);
-        }
-        var onMouseUp = (button:Int, x:Int, y:Int) -> {
-            
-        }
-        var onMove = (x:Float, y:Float, moveX:Float, moveY:Float) -> {
-            
-        }
-        var onWheel = (delta:Int) -> {
-            this.setResolution(500, 500);
-        }
-        var onMouseLeaveCanvas = () -> {
-            
-        }
-        
-        mouse.notify(onMouseDown, onMouseUp, onMove, onWheel, onMouseLeaveCanvas);
-
         if (cWidth != previousCanvasWidth || cHeight != previousCanvasHeight) {
             previousCanvasWidth = cWidth;
             previousCanvasHeight = cHeight;
