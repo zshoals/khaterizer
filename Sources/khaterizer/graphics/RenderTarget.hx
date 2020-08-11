@@ -41,6 +41,7 @@ class RenderTarget implements Canvas {
     public var g4(get, null):kha.graphics4.Graphics;
 
     public function new(width:Int, height:Int, resolutionResizeStrategy:ResolutionSizing, scaleMode:ImageScaling) {
+        assert(width > 0 && height > 0, "Tried to set a resolution less than 1. What are you doing?");
         this.image = Image.createRenderTarget(width, height);
         this.width = width;
         this.height = height;
@@ -53,10 +54,6 @@ class RenderTarget implements Canvas {
         this.previousCanvasWidth = 0;
         this.previousCanvasHeight = 0;
         assignGraphics();
-    }
-
-    public function getImage():Image {
-        return image;
     }
 
     private function resize(width:Int, height:Int):Void {
@@ -90,11 +87,11 @@ class RenderTarget implements Canvas {
 
             switch resolutionResizeStrategy {
                 case Grow:
-                    resizeGrow(cGraphics, cWidth, cHeight);
+                    resizeGrow(cWidth, cHeight);
                 case GrowAndShrink:
-                    resizeGrowAndShrink(cGraphics, cWidth, cHeight);
+                    resizeGrowAndShrink(cWidth, cHeight);
                 case Shrink:
-                    resizeShrink(cGraphics, cWidth, cHeight);
+                    resizeShrink(cWidth, cHeight);
                 case None: //Don't modify the Render Target in any way
                     return;
             }
@@ -125,10 +122,7 @@ class RenderTarget implements Canvas {
         }
     }
 
-    //I think all of these need to be changed, or at least some do
-    //They actually need to scale the resultant image, not just resize the Render Target
-    //Cool effect anyway
-    private inline function resizeGrow(cGraphics:Graphics, cWidth:Int, cHeight:Int):Void {
+    private inline function resizeGrow(cWidth:Int, cHeight:Int):Void {
         if (cWidth > this.resolutionWidth || cHeight > this.resolutionHeight) {
             resize(cWidth, cHeight);
         }
@@ -137,13 +131,13 @@ class RenderTarget implements Canvas {
         }
     }
 
-    private inline function resizeGrowAndShrink(cGraphics:Graphics, cWidth:Int, cHeight:Int):Void {
+    private inline function resizeGrowAndShrink(cWidth:Int, cHeight:Int):Void {
         if (this.width != cWidth || this.height != cHeight) {
             resize(cWidth, cHeight);
         }
     }
 
-    private inline function resizeShrink(cGraphics:Graphics, cWidth:Int, cHeight:Int):Void {
+    private inline function resizeShrink(cWidth:Int, cHeight:Int):Void {
         if (cWidth < this.resolutionWidth || cHeight < this.resolutionHeight) {
             resize(cWidth, cHeight);
         }
@@ -153,7 +147,9 @@ class RenderTarget implements Canvas {
     }
 
     //Feels good man :)
-    private inline function scaleByInteger(cGraphics:Canvas, cWidth:Int, cHeight:Int):Void {
+    private inline function scaleByInteger(canvas:Canvas, cWidth:Int, cHeight:Int):Void {
+        final cGraphics = canvas.g2;
+
         final scaleMultX = Math.floor(cWidth / this.resolutionWidth);
         final scaleMultY = Math.floor(cHeight / this.resolutionHeight);
         final minimumScalar = Math.min(scaleMultX, scaleMultY);
@@ -165,9 +161,9 @@ class RenderTarget implements Canvas {
 
         final translation = FastMatrix3.translation(centerX, centerY);
 
-        cGraphics.g2.pushTransformation(translation.multmat(scale));
-        cGraphics.g2.drawImage(this.image, 0, 0);
-        cGraphics.g2.popTransformation();
+        cGraphics.pushTransformation(translation.multmat(scale));
+        cGraphics.drawImage(this.image, 0, 0);
+        cGraphics.popTransformation();
     }
 
     /**

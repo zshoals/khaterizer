@@ -68,7 +68,7 @@ class Application extends Service {
     public function render(frames: Array<Framebuffer>):Void {
         drawTimer.update();
 
-        final backbuffer = renderer.render();
+        renderer.render();
         final g2 = frames[0].g2;
 
         g2.begin();

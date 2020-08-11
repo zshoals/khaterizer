@@ -53,7 +53,7 @@ class Renderer extends Service {
         img = Assets.images.pixel;
     }
 
-    public function render():Image {
+    public function render():Void {
         final g2 = backbuffer.g2;
 
         g2.begin();
@@ -70,8 +70,6 @@ class Renderer extends Service {
         }
 
         g2.end();
-
-        return backbuffer.getImage();
     }
 
     // public function changeBackbufferSize(backbufferWidth:Int, backbufferHeight:Int):Void {
