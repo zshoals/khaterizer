@@ -28,8 +28,8 @@ class RenderTarget implements Canvas {
 
     public var width(get, null):Int;
     public var height(get, null):Int;
-    private var resolutionWidth:Int;
-    private var resolutionHeight:Int;
+    public var resolutionWidth:Int;
+    public var resolutionHeight:Int;
     private var previousCanvasWidth:Int;
     private var previousCanvasHeight:Int;
 
@@ -148,14 +148,22 @@ class RenderTarget implements Canvas {
         }
     }
 
-    //TODO: Make sure this draws to the center of the screen pls
+    //Feels good man :)
     private inline function scaleByInteger(cGraphics:Canvas, cWidth:Int, cHeight:Int):Void {
-        if (cWidth % this.resolutionWidth == 0 && cHeight % this.resolutionHeight == 0) {
-            Scaler.scale(this.image, cGraphics, kha.ScreenRotation.RotationNone);
-        }
-        else {
-            resize(this.resolutionWidth, this.resolutionHeight);
-        }
+        final scaleMultX = Math.floor(cWidth / this.resolutionWidth);
+        final scaleMultY = Math.floor(cHeight / this.resolutionHeight);
+        final minimumScalar = Math.min(scaleMultX, scaleMultY);
+
+        var scale = FastMatrix3.scale(minimumScalar, minimumScalar);
+
+        final centerX = 0.5 * (cWidth - (this.width * minimumScalar));
+        final centerY = 0.5 * (cHeight - (this.height * minimumScalar));
+
+        final translation = FastMatrix3.translation(centerX, centerY);
+
+        cGraphics.g2.pushTransformation(translation.multmat(scale));
+        cGraphics.g2.drawImage(this.image, 0, 0);
+        cGraphics.g2.popTransformation();
     }
 
     /**
