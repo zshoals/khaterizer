@@ -1,5 +1,6 @@
 package khaterizer.ecs.services;
 
+import khaterizer.types.CppPerformanceHack;
 import khaterizer.math.Random;
 import kha.Scaler;
 import ecx.Engine;
@@ -37,7 +38,10 @@ class Application extends Service {
     var updateTimer:TimerUtil;
     public var updateTime:Float;
     
-    public function new() {}
+    public function new() {
+        //Don't remove me, I improve performance significantly on native, for some reason...
+        new CppPerformanceHack();
+    }
 
     override function initialize() {
         drawTimer = new TimerUtil();

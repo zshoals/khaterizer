@@ -18,6 +18,7 @@ import khaterizer.ecs.components.Spatial;
 import khaterizer.ecs.components.graphics.Renderable;
 import khaterizer.ecs.systems.graphics.RenderProxySystem;
 import khaterizer.graphics.RenderTarget;
+import khaterizer.types.ResizerMethod;
 
 class Renderer extends Service {
     public var backbuffer:RenderTarget;
@@ -35,7 +36,7 @@ class Renderer extends Service {
     public function new() {}
 
     public function init(backbufferWidth:Int, backbufferHeight:Int):Void {
-        backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, GrowAndShrink);
+        backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, None, Fill);
 
         renderables = renderSystem.renderables;
 
@@ -73,34 +74,34 @@ class Renderer extends Service {
         return backbuffer.getImage();
     }
 
-    public function changeBackbufferSize(backbufferWidth:Int, backbufferHeight:Int):Void {
-        backbuffer.resize(backbufferWidth, backbufferHeight);
-    }
+    // public function changeBackbufferSize(backbufferWidth:Int, backbufferHeight:Int):Void {
+    //     backbuffer.resize(backbufferWidth, backbufferHeight);
+    // }
 
-    /**
-        The automated resizing method triggered whenever the window is resized. Only one can be active, and the previous strategy is replaced on use.
+    // /**
+    //     The automated resizing method triggered whenever the window is resized. Only one can be active, and the previous strategy is replaced on use.
 
-        Non-functional on HTML5, use changeBackbufferSize instead with your own implementation.
+    //     Non-functional on HTML5, use changeBackbufferSize instead with your own implementation.
 
-        @param strat The resizing function to use on resize notifications.
-    **/
-    public function setBackbufferResizeMethod(strat:ResizeMethod):Void {
-        #if !kha_js
-        if (resizerFunction != null) {
-            unsetBackbufferResizeMethod();
-        }
-        window.notifyOnResize(strat);
+    //     @param strat The resizing function to use on resize notifications.
+    // **/
+    // public function setBackbufferResizeMethod(strat:ResizeMethod):Void {
+    //     #if !kha_js
+    //     if (resizerFunction != null) {
+    //         unsetBackbufferResizeMethod();
+    //     }
+    //     window.notifyOnResize(strat);
 
-        resizerFunction = strat;
-        #end
-    }
+    //     resizerFunction = strat;
+    //     #end
+    // }
 
-    public function unsetBackbufferResizeMethod():Void {
-        #if !kha_js
-        window.removeResizeNotifier(resizerFunction);
-        resizerFunction = null;
-        #end
-    }
+    // public function unsetBackbufferResizeMethod():Void {
+    //     #if !kha_js
+    //     window.removeResizeNotifier(resizerFunction);
+    //     resizerFunction = null;
+    //     #end
+    // }
 
     public inline function getCanvasWidth():Int {
         return backbuffer.width;

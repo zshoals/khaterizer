@@ -3,8 +3,7 @@ package khaterizer.ecs.services.graphics;
 import ecx.Service;
 import kha.Window;
 import kha.WindowOptions;
-
-typedef ResizeMethod = (x:Int, y:Int) -> Void;
+import khaterizer.types.ResizerMethod;
 
 class WindowConfiguration extends Service {
     public var verticalSynced(default, null):Bool;
