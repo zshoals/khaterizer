@@ -36,7 +36,7 @@ class Renderer extends Service {
     public function new() {}
 
     public function init(backbufferWidth:Int, backbufferHeight:Int):Void {
-        backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, None, IntegerScale);
+        backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, None, None);
 
         renderables = renderSystem.renderables;
 

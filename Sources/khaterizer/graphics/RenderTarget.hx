@@ -112,11 +112,15 @@ class RenderTarget implements Canvas {
                     cGraphics.imageScaleQuality = ImageScaleQuality.High;
                     Scaler.scale(this.image, canvas, RotationNone);
                 case IntegerScale:
-                    //No scaling required if we do it right
+                    //ScaleQuality just disrupts the image, turn it off here
                     cGraphics.imageScaleQuality = ImageScaleQuality.Low;
                     this.scaleByInteger(canvas, cWidth, cHeight);
                 case None:
-                    g2.drawImage(this.image, 0, 0);
+                    //We don't do any scaling but turn it off just in case
+                    cGraphics.imageScaleQuality = ImageScaleQuality.Low;
+                    final centerX = 0.5 * (cWidth - this.width);
+                    final centerY = 0.5 * (cHeight - this.height);
+                    cGraphics.drawImage(this.image, centerX, centerY);
             }
         }
     }
