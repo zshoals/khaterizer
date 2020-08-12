@@ -21,6 +21,10 @@ class CameraSystem extends System {
             if (button == 0) {
                 down = true;
             }
+
+            if (button == 3) {
+                renderer.backbuffer.setResolution(1280, 720);
+            }
         }
         var onMouseUp = (button:Int, x:Int, y:Int) -> {
             if (button == 0) {
@@ -32,9 +36,11 @@ class CameraSystem extends System {
         //dunno how to do this yet
         var onMove = (x:Float, y:Float, moveX:Float, moveY:Float) -> {
             if (down) {
-                //final adjustX = Std.int(x - window.windowWidth / 2);
-                //final adjustY = Std.int(y - window.windowHeight / 2);
-                camera.addMove(Std.int(moveX * camera.zoom), Std.int(moveY * camera.zoom));
+                //It feels wrong to access scale here
+                //How fix?
+                final adjustX = Std.int(moveX / renderer.backbuffer.scaleX);
+                final adjustY = Std.int(moveY / renderer.backbuffer.scaleY);
+                camera.addMove(adjustX, adjustY);
             }
         }
         var onWheel = (delta:Int) -> {

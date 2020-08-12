@@ -21,7 +21,6 @@ enum abstract ImageScaling(Int) {
     var Fill;
     var MaintainAspectRatio;
     var IntegerScale;
-    var None;
 }
 
 class RenderTarget implements Canvas {
@@ -31,6 +30,8 @@ class RenderTarget implements Canvas {
     public var height(get, null):Int;
     public var resolutionWidth:Int;
     public var resolutionHeight:Int;
+    public var scaleX:Float; //I think these are needed for the camera. Using them is pretty gross though IMO
+    public var scaleY:Float;
     private var previousCanvasWidth:Int;
     private var previousCanvasHeight:Int;
 
@@ -46,6 +47,8 @@ class RenderTarget implements Canvas {
         this.image = Image.createRenderTarget(width, height);
         this.width = width;
         this.height = height;
+        this.scaleX = 1;
+        this.scaleY = 1;
         this.resolutionWidth = width;
         this.resolutionHeight = height;
 
@@ -99,24 +102,27 @@ class RenderTarget implements Canvas {
             }
         }
 
-        //TODO: Make sure that centerY and centerX are set appropriately throughout this section
         switch scaleMode {
             case Fill:
                 cGraphics.imageScaleQuality = ImageScaleQuality.High;
-                cGraphics.pushTransformation(FastMatrix3.scale(canvas.width / this.width, canvas.height / this.height));
+                this.scaleX = canvas.width / this.width;
+                this.scaleY = canvas.height / this.height;
+                cGraphics.pushTransformation(FastMatrix3.scale(scaleX, scaleY));
+                
             case MaintainAspectRatio:
-                //This tool just does it for us, neat
+                //TODO: We need to extract that scale data from this so we can influence the camera
                 cGraphics.imageScaleQuality = ImageScaleQuality.High;
                 Scaler.scale(this.image, canvas, RotationNone);
+
             case IntegerScale:
                 //ScaleQuality just disrupts the image, turn it off here
                 cGraphics.imageScaleQuality = ImageScaleQuality.Low;
 
-                final scaleMultX = Math.floor(cWidth / this.resolutionWidth);
-                final scaleMultY = Math.floor(cHeight / this.resolutionHeight);
-                final minimumScalar = Math.min(scaleMultX, scaleMultY);
+                final minimumScalar = Math.min(Math.floor(cWidth / this.resolutionWidth), Math.floor(cHeight / this.resolutionHeight));
+                this.scaleX = minimumScalar;
+                this.scaleY = minimumScalar;
 
-                var scale = FastMatrix3.scale(minimumScalar, minimumScalar);
+                final scaleMat = FastMatrix3.scale(minimumScalar, minimumScalar);
 
                 //Floor these to get rid of some stretchy pixel weirdness
                 final centerX = Math.floor(0.5 * (cWidth - (this.width * minimumScalar)));
@@ -124,13 +130,7 @@ class RenderTarget implements Canvas {
 
                 final translation = FastMatrix3.translation(centerX, centerY);
 
-                cGraphics.pushTransformation(translation.multmat(scale));
-            case None:
-                //We don't do any scaling but turn it off just in case
-                cGraphics.imageScaleQuality = ImageScaleQuality.Low;
-                final centerX = Math.floor(0.5 * (cWidth - this.width));
-                final centerY = Math.floor(0.5 * (cHeight - this.height));
-                cGraphics.pushTransformation(FastMatrix3.translation(centerX, centerY));
+                cGraphics.pushTransformation(translation.multmat(scaleMat));
         }
 
         //Laziness

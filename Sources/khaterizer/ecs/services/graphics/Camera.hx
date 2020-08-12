@@ -11,21 +11,17 @@ class Camera extends Service {
     public var zoom:Float;
     public var captureWidth:Int;
     public var captureHeight:Int;
-    public var enabled:Bool;
 
     private var running:Bool;
     private var graphics:kha.graphics2.Graphics;
 
     public function new() {}
 
-    public function setup(x:Int, y:Int, rotation:Float, zoom:Float, captureWidth:Int, captureHeight:Int):Void {
+    public function setup(x:Int, y:Int, rotation:Float, zoom:Float):Void {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
         this.zoom = zoom;
-        this.captureWidth = captureWidth;
-        this.captureHeight = captureHeight;
-        this.enabled = true;
 
         this.running = false;
     }
@@ -76,18 +72,5 @@ class Camera extends Service {
 
     public function rotate(rotation:Float):Void {
         this.rotation = rotation;
-    }
-
-    public function captureRegion(captureWidth:Int, captureHeight:Int):Void {
-        this.captureWidth = captureWidth;
-        this.captureHeight = captureHeight;
-    }
-
-    public function enable():Void {
-        this.enabled = true;
-    }
-
-    public function disable():Void {
-        this.enabled = false;
     }
 }

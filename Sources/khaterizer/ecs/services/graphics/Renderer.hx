@@ -48,7 +48,7 @@ class Renderer extends Service {
 
             initialized = true;
 
-            camera.setup(0, 0, 0, 1, 500, 500);
+            camera.setup(0, 0, 0, 1);
         }
         else {
             throw "Renderer should only be initialized once.";

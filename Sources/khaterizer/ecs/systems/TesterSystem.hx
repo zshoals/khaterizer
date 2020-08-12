@@ -51,8 +51,8 @@ class TesterSystem extends System {
         var accum = 0.0;
         for (ent in _ents) {
             var loc = _loc.get(ent);
-            loc.position.x = _rand.GetFloatIn(0, window.getCanvasWidth());
-            loc.position.y = _rand.GetFloatIn(0, window.getCanvasHeight());
+            loc.position.x = _rand.GetFloatIn(0, 2000);
+            loc.position.y = _rand.GetFloatIn(0, 2000);
         }
     }
 }
