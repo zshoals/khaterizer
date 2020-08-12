@@ -27,36 +27,39 @@ class Renderer extends Service {
     var renderSystem:Wire<RenderProxySystem>;
     var renderables:EntityVector;
     var rects:Wire<Rect>;
+    var camera:Wire<Camera>;
 
     var window:Wire<WindowConfiguration>;
     var resizerFunction:ResizeMethod;
 
     var img:Image;
 
+    private var initialized:Bool = false;
+
     public function new() {}
 
-    public function init(backbufferWidth:Int, backbufferHeight:Int):Void {
-        backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, None, None);
+    public function init(backbufferWidth:Int, backbufferHeight:Int, resolutionSizingStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
+        if (!initialized) {
+            backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, resolutionSizingStrategy, scaleMode);
 
-        renderables = renderSystem.renderables;
+            renderables = renderSystem.renderables;
 
-        // resizerFunction = (x:Int, y:Int) -> {
-        //     backbuffer.resize(window.windowWidth, window.windowHeight);
-        // }
-        // setBackbufferResizeMethod(resizerFunction);
+            img = Assets.images.pixel;
 
-        //Force the sizing strategy to be applied
-        //I think this structure kind of sucks
-        //window.applyWindowSettings();
+            initialized = true;
 
-        //Assets.loadImage("pixel", (image:Image) -> this.img = image);
-        img = Assets.images.pixel;
+            camera.setup(0, 0, 0, 1, 500, 500);
+        }
+        else {
+            throw "Renderer should only be initialized once.";
+        }
     }
 
     public function render():Void {
         final g2 = backbuffer.g2;
 
         g2.begin();
+        camera.begin(backbuffer);
         
         for (r in renderables) {
             var pos = spatials.get(r).position;
@@ -69,37 +72,14 @@ class Renderer extends Service {
             g2.drawScaledImage(img, x, y, sizex, sizey);
         }
 
+        camera.end();
         g2.end();
     }
 
-    // public function changeBackbufferSize(backbufferWidth:Int, backbufferHeight:Int):Void {
-    //     backbuffer.resize(backbufferWidth, backbufferHeight);
-    // }
-
-    // /**
-    //     The automated resizing method triggered whenever the window is resized. Only one can be active, and the previous strategy is replaced on use.
-
-    //     Non-functional on HTML5, use changeBackbufferSize instead with your own implementation.
-
-    //     @param strat The resizing function to use on resize notifications.
-    // **/
-    // public function setBackbufferResizeMethod(strat:ResizeMethod):Void {
-    //     #if !kha_js
-    //     if (resizerFunction != null) {
-    //         unsetBackbufferResizeMethod();
-    //     }
-    //     window.notifyOnResize(strat);
-
-    //     resizerFunction = strat;
-    //     #end
-    // }
-
-    // public function unsetBackbufferResizeMethod():Void {
-    //     #if !kha_js
-    //     window.removeResizeNotifier(resizerFunction);
-    //     resizerFunction = null;
-    //     #end
-    // }
+    public function changeBackbuffer(width:Int, height:Int, resolutionSizeStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
+        backbuffer.unload();
+        backbuffer = new RenderTarget(width, height, resolutionSizeStrategy, scaleMode);
+    }
 
     public inline function getCanvasWidth():Int {
         return backbuffer.width;

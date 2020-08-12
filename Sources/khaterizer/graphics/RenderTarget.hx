@@ -1,5 +1,6 @@
 package khaterizer.graphics;
 
+import kha.Color;
 import kha.graphics2.ImageScaleQuality;
 import khaterizer.math.FastMatrix3;
 import kha.input.Mouse;
@@ -81,7 +82,8 @@ class RenderTarget implements Canvas {
         final cWidth = canvas.width;
         final cHeight = canvas.height;
 
-        if (cWidth != previousCanvasWidth || cHeight != previousCanvasHeight) {
+        final needsResize = (cWidth != previousCanvasWidth || cHeight != previousCanvasHeight);
+        if (needsResize) {
             previousCanvasWidth = cWidth;
             previousCanvasHeight = cHeight;
 
@@ -97,28 +99,44 @@ class RenderTarget implements Canvas {
             }
         }
 
-        if (resolutionResizeStrategy == ResolutionSizing.None) {
-            switch scaleMode {
-                case Fill:
-                    cGraphics.imageScaleQuality = ImageScaleQuality.High;
-                    cGraphics.pushTransformation(FastMatrix3.scale(canvas.width / this.width, canvas.height / this.height));
-                    cGraphics.drawImage(this.image, 0, 0);
-                    cGraphics.popTransformation();
-                case MaintainAspectRatio:
-                    //This tool just does it for us, neat
-                    cGraphics.imageScaleQuality = ImageScaleQuality.High;
-                    Scaler.scale(this.image, canvas, RotationNone);
-                case IntegerScale:
-                    //ScaleQuality just disrupts the image, turn it off here
-                    cGraphics.imageScaleQuality = ImageScaleQuality.Low;
-                    this.scaleByInteger(canvas, cWidth, cHeight);
-                case None:
-                    //We don't do any scaling but turn it off just in case
-                    cGraphics.imageScaleQuality = ImageScaleQuality.Low;
-                    final centerX = 0.5 * (cWidth - this.width);
-                    final centerY = 0.5 * (cHeight - this.height);
-                    cGraphics.drawImage(this.image, centerX, centerY);
-            }
+        //TODO: Make sure that centerY and centerX are set appropriately throughout this section
+        switch scaleMode {
+            case Fill:
+                cGraphics.imageScaleQuality = ImageScaleQuality.High;
+                cGraphics.pushTransformation(FastMatrix3.scale(canvas.width / this.width, canvas.height / this.height));
+            case MaintainAspectRatio:
+                //This tool just does it for us, neat
+                cGraphics.imageScaleQuality = ImageScaleQuality.High;
+                Scaler.scale(this.image, canvas, RotationNone);
+            case IntegerScale:
+                //ScaleQuality just disrupts the image, turn it off here
+                cGraphics.imageScaleQuality = ImageScaleQuality.Low;
+
+                final scaleMultX = Math.floor(cWidth / this.resolutionWidth);
+                final scaleMultY = Math.floor(cHeight / this.resolutionHeight);
+                final minimumScalar = Math.min(scaleMultX, scaleMultY);
+
+                var scale = FastMatrix3.scale(minimumScalar, minimumScalar);
+
+                //Floor these to get rid of some stretchy pixel weirdness
+                final centerX = Math.floor(0.5 * (cWidth - (this.width * minimumScalar)));
+                final centerY = Math.floor(0.5 * (cHeight - (this.height * minimumScalar)));
+
+                final translation = FastMatrix3.translation(centerX, centerY);
+
+                cGraphics.pushTransformation(translation.multmat(scale));
+            case None:
+                //We don't do any scaling but turn it off just in case
+                cGraphics.imageScaleQuality = ImageScaleQuality.Low;
+                final centerX = Math.floor(0.5 * (cWidth - this.width));
+                final centerY = Math.floor(0.5 * (cHeight - this.height));
+                cGraphics.pushTransformation(FastMatrix3.translation(centerX, centerY));
+        }
+
+        //Laziness
+        if (scaleMode != MaintainAspectRatio) {
+            cGraphics.drawImage(this.image, 0, 0);
+            cGraphics.popTransformation();
         }
     }
 
@@ -146,24 +164,12 @@ class RenderTarget implements Canvas {
         }
     }
 
-    //Feels good man :)
-    private inline function scaleByInteger(canvas:Canvas, cWidth:Int, cHeight:Int):Void {
+    private function drawDebugRect(canvas:Canvas, locX:Int, locY:Int) {
         final cGraphics = canvas.g2;
-
-        final scaleMultX = Math.floor(cWidth / this.resolutionWidth);
-        final scaleMultY = Math.floor(cHeight / this.resolutionHeight);
-        final minimumScalar = Math.min(scaleMultX, scaleMultY);
-
-        var scale = FastMatrix3.scale(minimumScalar, minimumScalar);
-
-        final centerX = 0.5 * (cWidth - (this.width * minimumScalar));
-        final centerY = 0.5 * (cHeight - (this.height * minimumScalar));
-
-        final translation = FastMatrix3.translation(centerX, centerY);
-
-        cGraphics.pushTransformation(translation.multmat(scale));
-        cGraphics.drawImage(this.image, 0, 0);
-        cGraphics.popTransformation();
+        var previousColor = cGraphics.color;
+        cGraphics.color = Color.Red;
+        cGraphics.drawRect(0, 0, locX, locY, 2);
+        cGraphics.color = previousColor;
     }
 
     /**

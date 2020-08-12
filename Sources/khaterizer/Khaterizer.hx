@@ -1,5 +1,7 @@
 package khaterizer;
 
+import khaterizer.graphics.RenderTarget.ResolutionSizing;
+import khaterizer.graphics.RenderTarget.ImageScaling;
 import ecx.Engine;
 import ecx.Service;
 import ecx.Wire;
@@ -86,6 +88,8 @@ class Khaterizer extends Service {
             @:privateAccess service.initialize();
         }
 
+        gWorld = world;
+
         Random.init(1337);
 
         engine.debugFont = font;
@@ -96,7 +100,7 @@ class Khaterizer extends Service {
         deltaTime.setTiming(1 / options.updateRate);
 
         //Renderer needs to be started here but we can retrieve it through Wire later if need be
-        renderer.init(window.windowWidth, window.windowHeight);
+        renderer.init(window.windowWidth, window.windowHeight, ResolutionSizing.None, ImageScaling.IntegerScale);
 
         Scheduler.addTimeTask(function () { game.update(); }, 0, deltaTime.dt());
         System.notifyOnFrames(function (frames) { game.render(frames);});

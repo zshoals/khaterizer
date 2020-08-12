@@ -39,7 +39,7 @@ class Application extends Service {
     public var updateTime:Float;
     
     public function new() {
-        //Don't remove me, I improve performance significantly on native, for some reason...
+        //Don't remove me, I improve performance significantly on native, for some reason...(30% speed gain!!! wtf?)
         new CppPerformanceHack();
     }
 
