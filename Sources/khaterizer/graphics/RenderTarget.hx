@@ -97,7 +97,7 @@ class RenderTarget implements Canvas {
                     resizeGrowAndShrink(cWidth, cHeight);
                 case Shrink:
                     resizeShrink(cWidth, cHeight);
-                case None: //Don't modify the Render Target in any way
+                case None: //Don't modify the Render Target resolution in any way
                     return;
             }
         }
@@ -108,7 +108,7 @@ class RenderTarget implements Canvas {
                 this.scaleX = canvas.width / this.width;
                 this.scaleY = canvas.height / this.height;
                 cGraphics.pushTransformation(FastMatrix3.scale(scaleX, scaleY));
-                
+
             case MaintainAspectRatio:
                 //TODO: We need to extract that scale data from this so we can influence the camera
                 cGraphics.imageScaleQuality = ImageScaleQuality.High;

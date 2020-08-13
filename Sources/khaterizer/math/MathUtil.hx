@@ -12,10 +12,10 @@ class MathUtil {
     }
 
     public inline static function deg2rad(degrees:Float) {
-        return Math.PI / 180;
+        return degrees * Math.PI / 180;
     }
 
     public inline static function rad2deg(radians:Float) {
-        return 180 / Math.PI;
+        return radians * 180 / Math.PI;
     }
 }

@@ -12,8 +12,10 @@ class WindowConfiguration extends Service {
     public var windowTitle(default, null):String;
 
     public var windowMode(default, null):kha.WindowMode;
-    public var windowWidth(default, null):Int;
-    public var windowHeight(default, null):Int;
+    public var width(default, null):Int;
+    public var height(default, null):Int;
+    public var centerWidth(default, null):Int;
+    public var centerHeight(default, null):Int;
 
     public var windowMinimizable(default, null):Bool;
     public var windowMaximizable(default, null):Bool;
@@ -29,9 +31,9 @@ class WindowConfiguration extends Service {
         resizeCallbacks = [];
 
         Window.get(0).notifyOnResize((x:Int, y:Int) -> {
-            windowWidth = x;
-            windowHeight = y;
-            callResizeCallbacks(windowWidth, windowHeight);
+            this.width = x;
+            this.height = y;
+            callResizeCallbacks(width, height);
         });
     }
 
@@ -60,8 +62,10 @@ class WindowConfiguration extends Service {
 
     //We'll never use more than one window amirite
     public function setWindowSize(width:Int, height:Int):Void {
-        windowWidth = width;
-        windowHeight = height;
+        this.width = width;
+        this.height = height;
+        this.centerWidth = Std.int(width / 2);
+        this.centerHeight = Std.int(height / 2);
     }
 
     public function setWindowTitle(title:String):Void{
@@ -112,7 +116,7 @@ class WindowConfiguration extends Service {
         //window.changeFramebuffer({frequency: _options.refreshRate, verticalSync: verticalSynced});
         window.changeWindowFeatures(addWindowFeatures());
         window.title = windowTitle;
-        callResizeCallbacks(windowWidth, windowHeight);
+        callResizeCallbacks(width, height);
     }
 
     private function addWindowFeatures():WindowFeatures {

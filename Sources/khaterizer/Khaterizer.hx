@@ -100,7 +100,7 @@ class Khaterizer extends Service {
         deltaTime.setTiming(1 / options.updateRate);
 
         //Renderer needs to be started here but we can retrieve it through Wire later if need be
-        renderer.init(window.windowWidth, window.windowHeight, ResolutionSizing.None, ImageScaling.IntegerScale);
+        renderer.init(window.width, window.height, ResolutionSizing.None, ImageScaling.IntegerScale);
 
         Scheduler.addTimeTask(function () { game.update(); }, 0, deltaTime.dt());
         System.notifyOnFrames(function (frames) { game.render(frames);});

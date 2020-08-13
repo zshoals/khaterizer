@@ -1,38 +1,39 @@
 package khaterizer.ecs.services.graphics;
 
-import khaterizer.ecs.components.Rect;
-import kha.Assets;
-import khaterizer.ecs.services.graphics.WindowConfiguration;
-import kha.Window;
 import ecx.Service;
-import ecx.World;
 import ecx.types.EntityVector;
+import kha.Assets;
 import kha.Color;
 import kha.Image;
 import kha.Shaders;
 import kha.System;
+import kha.Window;
 import kha.graphics2.Graphics;
 import kha.graphics4.PipelineState;
-import kha.graphics4.hxsl.Shader;
+import khaterizer.ecs.components.Rect;
 import khaterizer.ecs.components.Spatial;
 import khaterizer.ecs.components.graphics.Renderable;
+import khaterizer.ecs.services.graphics.WindowConfiguration;
 import khaterizer.ecs.systems.graphics.RenderProxySystem;
 import khaterizer.graphics.RenderTarget;
 import khaterizer.types.ResizerMethod;
 
 class Renderer extends Service {
     public var backbuffer:RenderTarget;
+
+    public var paused:Bool;
     
     var spatials:Wire<Spatial>;
     var renderSystem:Wire<RenderProxySystem>;
     var renderables:EntityVector;
     var rects:Wire<Rect>;
     var camera:Wire<Camera>;
+    var engine:Wire<EngineConfiguration>;
 
     var window:Wire<WindowConfiguration>;
     var resizerFunction:ResizeMethod;
 
-    var img:Image;
+    var fillRectHack:Image;
 
     private var initialized:Bool = false;
 
@@ -43,10 +44,10 @@ class Renderer extends Service {
             backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, resolutionSizingStrategy, scaleMode);
 
             renderables = renderSystem.renderables;
-
-            img = Assets.images.pixel;
+            fillRectHack = Assets.images.pixel;
 
             initialized = true;
+            paused = false;
 
             camera.setup(0, 0, 0, 1);
         }
@@ -56,11 +57,13 @@ class Renderer extends Service {
     }
 
     public function render():Void {
+        if (paused) return;
+
         final g2 = backbuffer.g2;
 
         g2.begin();
         camera.begin(backbuffer);
-        
+
         for (r in renderables) {
             var pos = spatials.get(r).position;
             var sizex = rects.get(r).width;
@@ -69,7 +72,7 @@ class Renderer extends Service {
             var y = pos.y;
             g2.color = Color.Green;
             //g2.fillRect(x, y, 1, 1);
-            g2.drawScaledImage(img, x, y, sizex, sizey);
+            g2.drawScaledImage(fillRectHack, x, y, sizex, sizey);
         }
 
         camera.end();
@@ -81,11 +84,47 @@ class Renderer extends Service {
         backbuffer = new RenderTarget(width, height, resolutionSizeStrategy, scaleMode);
     }
 
+    public function setResolution(width:Int, height:Int):Void {
+        backbuffer.setResolution(width, height);
+    }
+
+    public function setResolutionResizingStrategy(strategy:ResolutionSizing):Void {
+        backbuffer.resolutionResizeStrategy = strategy;
+    }
+
+    public function setImageScaleMode(mode:ImageScaling):Void {
+        backbuffer.scaleMode = mode;
+    }
+
+    public inline function getCanvasScaleWidth():Float {
+        return backbuffer.scaleX;
+    }
+
+    public inline function getCanvasScaleHeight():Float {
+        return backbuffer.scaleY;
+    }
+
     public inline function getCanvasWidth():Int {
         return backbuffer.width;
     }
 
     public inline function getCanvasHeight():Int {
         return backbuffer.height;
+    }
+
+    public inline function getCanvasResolutionWidth():Int {
+        return backbuffer.resolutionWidth;
+    }
+    
+    public inline function getCanvasResolutionHeight():Int {
+        return backbuffer.resolutionHeight;
+    }
+
+    public function pauseRendering():Void {
+        paused = true;
+    }
+    
+    public function unpauseRendering():Void {
+        paused = false;
     }
 }
