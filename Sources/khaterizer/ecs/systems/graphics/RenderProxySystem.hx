@@ -21,8 +21,4 @@ class RenderProxySystem extends System {
     public function new(){
         new CppPerformanceHack();
     }
-
-    override function update(){
-        return;
-    }
 }

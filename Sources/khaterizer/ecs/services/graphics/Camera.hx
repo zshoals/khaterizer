@@ -22,7 +22,9 @@ class Camera extends Service {
     private var graphics:kha.graphics2.Graphics;
     private var window:Wire<WindowConfiguration>;
 
-    public function new() {new CppPerformanceHack();}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     //We might want to change x/y to floats, but...
     //I believe this keeps us pixel perfect?

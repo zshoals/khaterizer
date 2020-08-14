@@ -50,7 +50,7 @@ class Initializer {
         config.add(new Spammer());
         //==Core Engine Systems==
         config.add(new TesterSystem(), Update);
-        config.add(new CameraSystem(), Update);
+        config.add(new CameraSystem(), Update + 1);
         config.add(new RenderProxySystem(), Render + 1);
         //==Core Engine Components==
         config.add(new Rect());

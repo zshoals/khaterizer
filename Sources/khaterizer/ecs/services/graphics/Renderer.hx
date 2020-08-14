@@ -48,9 +48,10 @@ class Renderer extends Service {
             backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, resolutionSizingStrategy, scaleMode);
 
             renderables = renderSystem.renderables;
-            fillRectHack = Assets.images.pixel;
             backbuffer.g2.font = engine.debugFont;
             backbuffer.g2.fontSize = 12;
+
+            fillRectHack = Assets.images.pixel;
 
             initialized = true;
             paused = false;
@@ -64,6 +65,7 @@ class Renderer extends Service {
 
     public function render():Void {
         if (paused) return;
+
 
         final g2 = backbuffer.g2;
 
