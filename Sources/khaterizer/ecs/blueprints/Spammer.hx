@@ -1,5 +1,6 @@
 package khaterizer.ecs.blueprints;
 
+import khaterizer.types.CppPerformanceHack;
 import khaterizer.ecs.components.Rect;
 import kha.math.Random;
 import ecx.Service;
@@ -12,7 +13,9 @@ class Spammer extends Service {
     var _rends:Wire<Renderable>;
     var rects:Wire<Rect>;
 
-    public function new() {}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     public function addRect(x:Float, y:Float, width:Float, height:Float):Entity {
         var ent = world.create();

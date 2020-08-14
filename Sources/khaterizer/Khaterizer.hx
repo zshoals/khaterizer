@@ -1,5 +1,6 @@
 package khaterizer;
 
+import khaterizer.types.CppPerformanceHack;
 import khaterizer.graphics.RenderTarget.ResolutionSizing;
 import khaterizer.graphics.RenderTarget.ImageScaling;
 import ecx.Engine;
@@ -38,7 +39,9 @@ class Khaterizer extends Service {
     var game:Wire<Application>;
     var renderer:Wire<Renderer>;
 
-    public function new() {}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     public function start(options:InitializationOptions):Void {
         window.setWindowVerticalSync(options.verticalSync);

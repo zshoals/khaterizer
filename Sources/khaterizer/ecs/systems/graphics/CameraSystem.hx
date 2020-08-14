@@ -1,5 +1,6 @@
 package khaterizer.ecs.systems.graphics;
 
+import khaterizer.types.CppPerformanceHack;
 import khaterizer.ecs.services.graphics.WindowConfiguration;
 import khaterizer.ecs.services.graphics.Renderer;
 import kha.input.Mouse;
@@ -14,7 +15,9 @@ class CameraSystem extends System {
     var xx:Float;
     var yy:Float;
 
-    public function new() {}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     override function initialize() {
         var mouse = Mouse.get(0);
@@ -53,10 +56,10 @@ class CameraSystem extends System {
         }
         var onWheel = (delta:Int) -> {
             if (delta < 0) {
-                camera.incrementalZoomToCursor(xx, yy, 0.05, 5);
+                camera.incrementalZoomToPoint(xx, yy, 0.05, 5);
             }
             if (delta > 0) {
-                camera.incrementalZoomAwayFromCursor(xx, yy, 0.05, 5);
+                camera.incrementalZoomAwayFromPoint(xx, yy, 0.05, 5);
             }
         }
         var onMouseLeaveCanvas = () -> {

@@ -1,5 +1,6 @@
 package khaterizer.ecs.services.graphics;
 
+import khaterizer.types.CppPerformanceHack;
 import ecx.Service;
 import kha.Window;
 import kha.WindowOptions;
@@ -25,7 +26,9 @@ class WindowConfiguration extends Service {
 
     private var resizeCallbacks:Array<ResizeMethod>;
 
-    public function new() {}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     override function initialize() {
         resizeCallbacks = [];

@@ -37,9 +37,10 @@ class Application extends Service {
 
     var updateTimer:TimerUtil;
     public var updateTime:Float;
-    
+
     public function new() {
         //Don't remove me, I improve performance significantly on native, for some reason...(30% speed gain!!! wtf?)
+        //Also I only work sometimes otherwise you're just doomed XDDDDD
         new CppPerformanceHack();
     }
 
@@ -47,7 +48,7 @@ class Application extends Service {
         drawTimer = new TimerUtil();
         fpsTimer = new TimerUtil();
         updateTimer = new TimerUtil();
-        
+
         recentFPS = [];
         renderCycles = 0;
         framesPerSecond = 0;

@@ -1,5 +1,7 @@
 package khaterizer.ecs.services.graphics;
 
+import khaterizer.types.CppPerformanceHack;
+import khaterizer.math.Random;
 import ecx.Service;
 import ecx.types.EntityVector;
 import kha.Assets;
@@ -37,7 +39,9 @@ class Renderer extends Service {
 
     private var initialized:Bool = false;
 
-    public function new() {}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     public function init(backbufferWidth:Int, backbufferHeight:Int, resolutionSizingStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
         if (!initialized) {
@@ -45,6 +49,8 @@ class Renderer extends Service {
 
             renderables = renderSystem.renderables;
             fillRectHack = Assets.images.pixel;
+            backbuffer.g2.font = engine.debugFont;
+            backbuffer.g2.fontSize = 12;
 
             initialized = true;
             paused = false;
@@ -71,7 +77,6 @@ class Renderer extends Service {
             var x = pos.x;
             var y = pos.y;
             g2.color = Color.Green;
-            //g2.fillRect(x, y, 1, 1);
             g2.drawScaledImage(fillRectHack, x, y, sizex, sizey);
         }
 

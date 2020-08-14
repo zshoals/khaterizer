@@ -1,5 +1,6 @@
 package khaterizer.ecs.systems;
 
+import khaterizer.types.CppPerformanceHack;
 import kha.Assets;
 import ecx.System;
 import khaterizer.util.ScriptRunner;
@@ -10,7 +11,9 @@ class ScriptTestSystem extends System {
     private var loaded:Bool;
     private var spam:Wire<Spammer>;
     
-    public function new() {}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     override function initialize() {
         loaded = false;

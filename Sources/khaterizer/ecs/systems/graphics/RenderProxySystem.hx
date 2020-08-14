@@ -1,5 +1,6 @@
 package khaterizer.ecs.systems.graphics;
 
+import khaterizer.types.CppPerformanceHack;
 import ecx.System;
 import khaterizer.ecs.components.graphics.Renderable;
 import khaterizer.ecs.components.Spatial;
@@ -17,7 +18,9 @@ class RenderProxySystem extends System {
 
     public var renderables:Family<Renderable, Spatial>;
 
-    public function new(){}
+    public function new(){
+        new CppPerformanceHack();
+    }
 
     override function update(){
         return;

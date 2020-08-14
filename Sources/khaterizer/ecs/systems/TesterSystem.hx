@@ -27,7 +27,9 @@ class TesterSystem extends System {
     var window:Wire<Renderer>;
     var count:Int;
 
-    public function new() {}
+    public function new() {
+        new CppPerformanceHack();
+    }
 
     override function initialize() {
         _rand = new Random(133742069);
@@ -37,7 +39,7 @@ class TesterSystem extends System {
 
     override function update() {
         if (_firstRun) {
-            for (i in 0...100000) _spam.addRect(_rand.GetFloatIn(0, window.getCanvasWidth()), _rand.GetFloatIn(0, window.getCanvasHeight()), 1, 1);
+            for (i in 0...70000) _spam.addRect(_rand.GetFloatIn(0, window.getCanvasWidth()), _rand.GetFloatIn(0, window.getCanvasHeight()), 1, 1);
             //Do not remove this fucking line
             _firstRun = false;
         }

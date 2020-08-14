@@ -1,5 +1,6 @@
 package khaterizer.ecs.services;
 
+import khaterizer.types.CppPerformanceHack;
 import ecx.Service;
 
 /**
@@ -12,7 +13,9 @@ import ecx.Service;
 class DeltaTime extends Service {
     private var deltaTime(default, null):Float;
 
-    public function new(){};
+    public function new(){
+        new CppPerformanceHack();
+    };
 
     public inline function dt():Float {
         return deltaTime;
