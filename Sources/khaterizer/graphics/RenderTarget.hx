@@ -35,6 +35,8 @@ class RenderTarget implements Canvas {
     private var previousCanvasWidth:Int;
     private var previousCanvasHeight:Int;
 
+    private var storedTransform:FastMatrix3;
+
     public var resolutionResizeStrategy:ResolutionSizing;
     public var scaleMode:ImageScaling;
 
@@ -57,6 +59,8 @@ class RenderTarget implements Canvas {
 
         this.previousCanvasWidth = 0;
         this.previousCanvasHeight = 0;
+
+        this.storedTransform = FastMatrix3.identity();
         assignGraphics();
     }
 
@@ -98,43 +102,51 @@ class RenderTarget implements Canvas {
                 case Shrink:
                     resizeShrink(cWidth, cHeight);
                 case None: //Don't modify the Render Target resolution in any way
-                    return;
+            }
+            
+            switch scaleMode {
+                case Fill:
+                    cGraphics.imageScaleQuality = ImageScaleQuality.High;
+                    this.scaleX = canvas.width / this.width;
+                    this.scaleY = canvas.height / this.height;
+                    this.storedTransform = FastMatrix3.scale(scaleX, scaleY);
+
+                    cGraphics.pushTransformation(storedTransform);
+
+                case MaintainAspectRatio:
+                    //TODO: We need to extract that scale data from this so we can influence the camera
+                    //TODO double: Doesn't work with stored transforms now
+                    cGraphics.imageScaleQuality = ImageScaleQuality.High;
+                    Scaler.scale(this.image, canvas, RotationNone);
+
+                case IntegerScale:
+                    //ScaleQuality just disrupts the image, turn it off here
+                    cGraphics.imageScaleQuality = ImageScaleQuality.Low;
+
+                    final minimumScalar = Math.min(Math.floor(cWidth / this.resolutionWidth), Math.floor(cHeight / this.resolutionHeight));
+                    this.scaleX = minimumScalar;
+                    this.scaleY = minimumScalar;
+
+                    //Floor these to get rid of some stretchy pixel weirdness
+                    final centerX = Math.floor(0.5 * (cWidth - (this.width * minimumScalar)));
+                    final centerY = Math.floor(0.5 * (cHeight - (this.height * minimumScalar)));
+
+                    final translation = FastMatrix3.translation(centerX, centerY);
+                    final scaleMat = FastMatrix3.scale(minimumScalar, minimumScalar);
+
+                    this.storedTransform = translation.multmat(scaleMat);
+
+                    cGraphics.pushTransformation(storedTransform);
+            }
+
+            //Laziness
+            if (scaleMode != MaintainAspectRatio) {
+                cGraphics.drawImage(this.image, 0, 0);
+                cGraphics.popTransformation();
             }
         }
-
-        switch scaleMode {
-            case Fill:
-                cGraphics.imageScaleQuality = ImageScaleQuality.High;
-                this.scaleX = canvas.width / this.width;
-                this.scaleY = canvas.height / this.height;
-                cGraphics.pushTransformation(FastMatrix3.scale(scaleX, scaleY));
-
-            case MaintainAspectRatio:
-                //TODO: We need to extract that scale data from this so we can influence the camera
-                cGraphics.imageScaleQuality = ImageScaleQuality.High;
-                Scaler.scale(this.image, canvas, RotationNone);
-
-            case IntegerScale:
-                //ScaleQuality just disrupts the image, turn it off here
-                cGraphics.imageScaleQuality = ImageScaleQuality.Low;
-
-                final minimumScalar = Math.min(Math.floor(cWidth / this.resolutionWidth), Math.floor(cHeight / this.resolutionHeight));
-                this.scaleX = minimumScalar;
-                this.scaleY = minimumScalar;
-
-                final scaleMat = FastMatrix3.scale(minimumScalar, minimumScalar);
-
-                //Floor these to get rid of some stretchy pixel weirdness
-                final centerX = Math.floor(0.5 * (cWidth - (this.width * minimumScalar)));
-                final centerY = Math.floor(0.5 * (cHeight - (this.height * minimumScalar)));
-
-                final translation = FastMatrix3.translation(centerX, centerY);
-
-                cGraphics.pushTransformation(translation.multmat(scaleMat));
-        }
-
-        //Laziness
-        if (scaleMode != MaintainAspectRatio) {
+        else {
+            cGraphics.pushTransformation(storedTransform);
             cGraphics.drawImage(this.image, 0, 0);
             cGraphics.popTransformation();
         }
