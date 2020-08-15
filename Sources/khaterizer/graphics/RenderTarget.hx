@@ -44,15 +44,15 @@ class RenderTarget implements Canvas {
     public var g2(get, null):kha.graphics2.Graphics;
     public var g4(get, null):kha.graphics4.Graphics;
 
-    public function new(width:Int, height:Int, resolutionResizeStrategy:ResolutionSizing, scaleMode:ImageScaling) {
+    public function new(width:Int, height:Int, resolutionWidth:Int, resolutionHeight:Int, resolutionResizeStrategy:ResolutionSizing, scaleMode:ImageScaling) {
         assert(width > 0 && height > 0, "Tried to set a resolution less than 1. What are you doing?");
         this.image = Image.createRenderTarget(width, height);
         this.width = width;
         this.height = height;
         this.scaleX = 1;
         this.scaleY = 1;
-        this.resolutionWidth = width;
-        this.resolutionHeight = height;
+        this.resolutionWidth = resolutionWidth;
+        this.resolutionHeight = resolutionHeight;
 
         this.resolutionResizeStrategy = resolutionResizeStrategy;
         this.scaleMode = scaleMode;
@@ -90,6 +90,7 @@ class RenderTarget implements Canvas {
         final cHeight = canvas.height;
 
         final needsResize = (cWidth != previousCanvasWidth || cHeight != previousCanvasHeight);
+
         if (needsResize) {
             previousCanvasWidth = cWidth;
             previousCanvasHeight = cHeight;
@@ -103,12 +104,13 @@ class RenderTarget implements Canvas {
                     resizeShrink(cWidth, cHeight);
                 case None: //Don't modify the Render Target resolution in any way
             }
-            
+
             switch scaleMode {
                 case Fill:
                     cGraphics.imageScaleQuality = ImageScaleQuality.High;
                     this.scaleX = canvas.width / this.width;
                     this.scaleY = canvas.height / this.height;
+                    
                     this.storedTransform = FastMatrix3.scale(scaleX, scaleY);
 
                     cGraphics.pushTransformation(storedTransform);

@@ -1,5 +1,6 @@
 package khaterizer.ecs.services.graphics;
 
+import khaterizer.math.FastMatrix3;
 import khaterizer.types.CppPerformanceHack;
 import khaterizer.math.Random;
 import ecx.Service;
@@ -43,20 +44,21 @@ class Renderer extends Service {
         new CppPerformanceHack();
     }
 
-    public function init(backbufferWidth:Int, backbufferHeight:Int, resolutionSizingStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
+    public function init(backbufferWidth:Int, backbufferHeight:Int, resolutionWidth:Int, resolutionHeight:Int, resolutionSizingStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
         if (!initialized) {
-            backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, resolutionSizingStrategy, scaleMode);
+            paused = true;
+            backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, resolutionWidth, resolutionHeight, resolutionSizingStrategy, scaleMode);
 
             renderables = renderSystem.renderables;
             backbuffer.g2.font = engine.debugFont;
             backbuffer.g2.fontSize = 12;
 
-            fillRectHack = Assets.images.pixel;
+            Assets.loadImage("big_kha_Logo", (img) -> {
+                fillRectHack = img;
+                paused = false;
+            });
 
             initialized = true;
-            paused = false;
-
-            camera.setup(0, 0, 0, 1);
         }
         else {
             throw "Renderer should only be initialized once.";
@@ -74,21 +76,33 @@ class Renderer extends Service {
 
         for (r in renderables) {
             var pos = spatials.get(r).position;
+            var rot = spatials.get(r).rotation;
+            var mid = rects.get(r).midpoint;
             var sizex = rects.get(r).width;
             var sizey = rects.get(r).height;
             var x = pos.x;
             var y = pos.y;
-            g2.color = Color.Green;
-            g2.drawScaledImage(fillRectHack, x, y, sizex, sizey);
+
+            var num = Random.getIn(0, 5);
+
+            g2.color = Color.White;
+
+            final translation = FastMatrix3.translation(x - mid.x, y - mid.y);
+            final rotMat = FastMatrix3.rotation(MathUtil.deg2rad(rot));
+            final trueResult = translation.multmat(rotMat);
+
+            g2.pushTransformation(trueResult);
+            g2.drawScaledImage(fillRectHack, 0, 0, sizex, sizey);
+            g2.popTransformation();
         }
 
         camera.end();
         g2.end();
     }
 
-    public function changeBackbuffer(width:Int, height:Int, resolutionSizeStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
+    public function changeBackbuffer(width:Int, height:Int, resolutionWidth:Int, resolutionHeight:Int, resolutionSizeStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
         backbuffer.unload();
-        backbuffer = new RenderTarget(width, height, resolutionSizeStrategy, scaleMode);
+        backbuffer = new RenderTarget(width, height, resolutionWidth, resolutionHeight, resolutionSizeStrategy, scaleMode);
     }
 
     public function setResolution(width:Int, height:Int):Void {

@@ -18,7 +18,7 @@ class SpatialData {
         x:Float, y:Float, 
         ?rotation:Float, 
         ?linearVelocity:Vector2, 
-        ?angularVelocity:Float = 0):Void {
+        ?angularVelocity:Float):Void {
         this.position = new Vector2(x, y);
         this.rotation = rotation == null ? 0 : rotation;
         this.linearVelocity = linearVelocity == null ? new Vector2(0, 0) : linearVelocity;

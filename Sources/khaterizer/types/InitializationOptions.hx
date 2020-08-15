@@ -8,6 +8,8 @@ typedef InitializationOptions = {
     var windowMode:WindowMode;
     var windowWidth:Int;
     var windowHeight:Int;
+    var resolutionWidth:Int;
+    var resolutionHeight:Int;
     var windowBorderless:Bool;
 
     var windowMinimizable:Bool;

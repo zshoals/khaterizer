@@ -26,6 +26,7 @@ class Application extends Service {
     var renderer:Wire<Renderer>;
     var windowConfig:Wire<WindowConfiguration>;
     var engineConfig:Wire<EngineConfiguration>;
+    var timing:Wire<Timing>;
 
     var fpsTimer:TimerUtil;
     var recentFPS:Array<Float>;
@@ -61,6 +62,8 @@ class Application extends Service {
         }
 
         updateTime = updateTimer.dtReal();
+
+        timing.setIt(updateTime);
     }
 
     //Pass this data into the renderer instead of doing work here
@@ -107,7 +110,7 @@ class Application extends Service {
         g2.drawString("Frames Per Second: " + framesPerSecond, 20, 20);
         g2.drawString("Backbuffer Render Time: " + calcFrametimeAverage(), 20, 40);
         g2.drawString("Logical Update Time: " + MathUtil.truncate(updateTime, 6), 20, 60);
-        g2.drawString("Fucking Squares on Screen: " + world.used, 20, 80);
+        g2.drawString("Deadly Parrots on Screen: " + world.used, 20, 80);
 
         g2.end();
     }

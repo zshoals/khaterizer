@@ -26,6 +26,10 @@ class Camera extends Service {
         new CppPerformanceHack();
     }
 
+    override function initialize():Void {
+        this.setup(0, 0, 0, 1);
+    }
+
     //We might want to change x/y to floats, but...
     //I believe this keeps us pixel perfect?
     public function setup(x:Int, y:Int, rotation:Float, zoom:Float):Void {

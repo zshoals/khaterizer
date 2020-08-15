@@ -44,13 +44,13 @@ class Initializer {
         config.add(new WindowConfiguration());
         config.add(new EngineConfiguration());
         config.add(new Renderer());
-        config.add(new DeltaTime());
+        config.add(new Timing());
         config.add(new Camera());
 
         config.add(new Spammer());
         //==Core Engine Systems==
-        config.add(new TesterSystem(), Update);
-        config.add(new CameraSystem(), Update + 1);
+        //config.add(new TesterSystem(), Update);
+        //config.add(new CameraSystem(), Update + 1);
         config.add(new RenderProxySystem(), Render + 1);
         //==Core Engine Components==
         config.add(new Rect());
