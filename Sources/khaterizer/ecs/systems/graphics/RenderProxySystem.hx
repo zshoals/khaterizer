@@ -19,6 +19,6 @@ class RenderProxySystem extends System {
     public var renderables:Family<Renderable, Spatial>;
 
     public function new(){
-        new CppPerformanceHack();
+        
     }
 }

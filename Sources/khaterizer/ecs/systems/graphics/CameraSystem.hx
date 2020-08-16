@@ -16,14 +16,14 @@ class CameraSystem extends System {
     var yy:Float;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     override function initialize() {
         var mouse = Mouse.get(0);
         
         var onMouseDown = (button:Int, x:Int, y:Int) -> {
-            if (button == 0) {
+            if (button == 4) {
                 down = true;
                 renderer.unpauseRendering();
             }
@@ -37,7 +37,7 @@ class CameraSystem extends System {
             }
         }
         var onMouseUp = (button:Int, x:Int, y:Int) -> {
-            if (button == 0) {
+            if (button == 4) {
                 down = false;
             }
         }

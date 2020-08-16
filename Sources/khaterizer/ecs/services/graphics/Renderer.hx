@@ -41,7 +41,7 @@ class Renderer extends Service {
     private var initialized:Bool = false;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     public function init(backbufferWidth:Int, backbufferHeight:Int, resolutionWidth:Int, resolutionHeight:Int, resolutionSizingStrategy:ResolutionSizing, scaleMode:ImageScaling):Void {
@@ -53,6 +53,7 @@ class Renderer extends Service {
             backbuffer.g2.font = engine.debugFont;
             backbuffer.g2.fontSize = 12;
 
+            //TODO: REMOVE TEST STUFF
             Assets.loadImage("big_kha_Logo", (img) -> {
                 fillRectHack = img;
                 paused = false;
@@ -73,7 +74,9 @@ class Renderer extends Service {
 
         g2.begin();
         camera.begin(backbuffer);
+        g2.color = Color.White;
 
+        //TODO: REMOVE TEST STUFF
         for (r in renderables) {
             var pos = spatials.get(r).position;
             var rot = spatials.get(r).rotation;
@@ -83,17 +86,25 @@ class Renderer extends Service {
             var x = pos.x;
             var y = pos.y;
 
-            var num = Random.getIn(0, 5);
-
-            g2.color = Color.White;
+            //TODO: REMOVE TEST STUFF
+            
+            final adjX = pos.x - mid.x;
+            final adjY = pos.y - mid.y;
 
             final translation = FastMatrix3.translation(x - mid.x, y - mid.y);
+
+            final center = FastMatrix3.translation(-mid.x, -mid.y);
             final rotMat = FastMatrix3.rotation(MathUtil.deg2rad(rot));
-            final trueResult = translation.multmat(rotMat);
+            final counterCenter = FastMatrix3.translation(mid.x, mid.y);
+            final centered = counterCenter.multmat(rotMat.multmat(center));
+
+            final trueResult = translation.multmat(centered);
 
             g2.pushTransformation(trueResult);
             g2.drawScaledImage(fillRectHack, 0, 0, sizex, sizey);
             g2.popTransformation();
+            
+            //g2.drawScaledImage(fillRectHack, pos.x, pos.y, sizex, sizey);
         }
 
         camera.end();

@@ -23,7 +23,7 @@ class Camera extends Service {
     private var window:Wire<WindowConfiguration>;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     override function initialize():Void {
@@ -63,6 +63,7 @@ class Camera extends Service {
             final rotation = FastMatrix3.rotation(MathUtil.deg2rad(-rotation));
             final counterTrans = FastMatrix3.translation(midWidth, midHeight);
 
+            //Is this needed?
             final centerScale = FastMatrix3.translation(-midWidth, -midHeight);
             final scale = FastMatrix3.scale(zoom, zoom);
             final counterScale = FastMatrix3.translation(midWidth, midHeight);

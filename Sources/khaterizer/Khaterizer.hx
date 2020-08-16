@@ -40,7 +40,7 @@ class Khaterizer extends Service {
     var renderer:Wire<Renderer>;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     public function start(options:InitializationOptions):Void {

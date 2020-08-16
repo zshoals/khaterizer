@@ -8,6 +8,6 @@ class EngineConfiguration extends Service {
     public var debugFont:Font;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 }

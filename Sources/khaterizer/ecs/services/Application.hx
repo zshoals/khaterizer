@@ -40,7 +40,7 @@ class Application extends Service {
     public var updateTime:Float;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     override function initialize() {
@@ -62,8 +62,6 @@ class Application extends Service {
         }
 
         updateTime = updateTimer.dtReal();
-
-        timing.setIt(updateTime);
     }
 
     //Pass this data into the renderer instead of doing work here

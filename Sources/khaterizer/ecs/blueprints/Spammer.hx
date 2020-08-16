@@ -14,7 +14,7 @@ class Spammer extends Service {
     var rects:Wire<Rect>;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     public function addRect(x:Float, y:Float, width:Float, height:Float):Entity {

@@ -12,7 +12,7 @@ class ScriptTestSystem extends System {
     private var spam:Wire<Spammer>;
     
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     override function initialize() {

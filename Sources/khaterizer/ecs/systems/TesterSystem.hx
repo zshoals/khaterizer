@@ -28,7 +28,7 @@ class TesterSystem extends System {
     var count:Int;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     override function initialize() {

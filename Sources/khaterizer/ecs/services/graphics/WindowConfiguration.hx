@@ -27,7 +27,7 @@ class WindowConfiguration extends Service {
     private var resizeCallbacks:Array<ResizeMethod>;
 
     public function new() {
-        new CppPerformanceHack();
+        
     }
 
     override function initialize() {
