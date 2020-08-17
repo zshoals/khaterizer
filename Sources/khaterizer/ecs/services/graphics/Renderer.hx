@@ -39,7 +39,6 @@ class Renderer extends Service {
     var resizerFunction:ResizeMethod;
 
     var fillRectHack:Image;
-    var timer:TimerUtil;
 
     private var initialized:Bool = false;
 
@@ -63,9 +62,6 @@ class Renderer extends Service {
             });
 
             initialized = true;
-
-            timer = new TimerUtil();
-            timer.update();
         }
         else {
             throw "Renderer should only be initialized once.";
@@ -74,8 +70,6 @@ class Renderer extends Service {
 
     public function render():Void {
         if (paused) return;
-        timer.update();
-
 
         final g2 = backbuffer.g2;
 

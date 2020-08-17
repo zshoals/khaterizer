@@ -44,18 +44,6 @@ class FastMatrix3Ext {
         Uses vectors instead of raw values. See FastMatrix3Ext.transformationRaw for parameter details.
     **/
     public static inline function transformation(clazz:Class<FastMatrix3>, position:Vector2, anchor:Vector2, alpha:FastFloat, scale:Vector2): FastMatrix3 {
-
-        //Try and skip some of the more expensive operations if they're not needed
-        if (alpha == 0) {
-            return FastMatrix3.translation(position.x - anchor.x, position.y - anchor.y).multmat(FastMatrix3.scale(scale.x, scale.y));
-        }
-        else if (anchor.x == 0 && anchor.y == 0) {
-            return FastMatrix3.translation(position.x, position.y).multmat(FastMatrix3.rotation(alpha).multmat(FastMatrix3.scale(scale.x, scale.y)));
-        }
-        else {
-            return FastMatrix3.translation(position.x - anchor.x, position.y - anchor.y)
-            .multmat(FastMatrix3.rotationAround(anchor.x, anchor.y, alpha)
-            .multmat(FastMatrix3.scale(scale.x, scale.y)));
-        }
+        return FastMatrix3.transformationRaw(position.x, position.y, anchor.x, anchor.y, alpha, scale.x, scale.y);
     }
 }
