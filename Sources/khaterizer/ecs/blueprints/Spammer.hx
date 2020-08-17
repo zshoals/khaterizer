@@ -23,7 +23,7 @@ class Spammer extends Service {
         rect.setup(width, height);
 
         var s = _spatials.create(ent);
-        s.setup(x, y);
+        s.setup({x: x, y: y});
 
         _rends.create(ent);
 

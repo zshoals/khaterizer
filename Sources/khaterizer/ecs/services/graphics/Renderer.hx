@@ -1,6 +1,8 @@
 package khaterizer.ecs.services.graphics;
 
+import khaterizer.util.TimerUtil;
 import khaterizer.math.FastMatrix3;
+using khaterizer.math.FastMatrix3Ext;
 import khaterizer.types.CppPerformanceHack;
 import khaterizer.math.Random;
 import ecx.Service;
@@ -25,7 +27,7 @@ class Renderer extends Service {
     public var backbuffer:RenderTarget;
 
     public var paused:Bool;
-    
+
     var spatials:Wire<Spatial>;
     var renderSystem:Wire<RenderProxySystem>;
     var renderables:EntityVector;
@@ -37,6 +39,7 @@ class Renderer extends Service {
     var resizerFunction:ResizeMethod;
 
     var fillRectHack:Image;
+    var timer:TimerUtil;
 
     private var initialized:Bool = false;
 
@@ -60,6 +63,9 @@ class Renderer extends Service {
             });
 
             initialized = true;
+
+            timer = new TimerUtil();
+            timer.update();
         }
         else {
             throw "Renderer should only be initialized once.";
@@ -68,6 +74,7 @@ class Renderer extends Service {
 
     public function render():Void {
         if (paused) return;
+        timer.update();
 
 
         final g2 = backbuffer.g2;
@@ -78,33 +85,19 @@ class Renderer extends Service {
 
         //TODO: REMOVE TEST STUFF
         for (r in renderables) {
-            var pos = spatials.get(r).position;
-            var rot = spatials.get(r).rotation;
-            var mid = rects.get(r).midpoint;
-            var sizex = rects.get(r).width;
-            var sizey = rects.get(r).height;
-            var x = pos.x;
-            var y = pos.y;
+            final spat = spatials.get(r);
+            final rect = rects.get(r);
+            final mid = rect.midpoint;
+            final pos = spat.position;
+            final rot = spat.rotation;
+            final scale = spat.scale;
 
             //TODO: REMOVE TEST STUFF
-            
-            final adjX = pos.x - mid.x;
-            final adjY = pos.y - mid.y;
-
-            final translation = FastMatrix3.translation(x - mid.x, y - mid.y);
-
-            final center = FastMatrix3.translation(-mid.x, -mid.y);
-            final rotMat = FastMatrix3.rotation(MathUtil.deg2rad(rot));
-            final counterCenter = FastMatrix3.translation(mid.x, mid.y);
-            final centered = counterCenter.multmat(rotMat.multmat(center));
-
-            final trueResult = translation.multmat(centered);
-
+            //We technically only have to update these each logical update, not every render
+            final trueResult = FastMatrix3.transformation(pos, mid, MathUtil.deg2rad(rot), scale);
             g2.pushTransformation(trueResult);
-            g2.drawScaledImage(fillRectHack, 0, 0, sizex, sizey);
+            g2.drawScaledImage(fillRectHack, 0, 0, rect.width, rect.height);
             g2.popTransformation();
-            
-            //g2.drawScaledImage(fillRectHack, pos.x, pos.y, sizex, sizey);
         }
 
         camera.end();
