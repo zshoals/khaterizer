@@ -1,5 +1,6 @@
 package khaterizer;
 
+import ecx.managers.WorldConstructor;
 import khaterizer.types.CppPerformanceHack;
 import khaterizer.graphics.RenderTarget.ResolutionSizing;
 import khaterizer.graphics.RenderTarget.ImageScaling;
@@ -84,12 +85,11 @@ class Khaterizer extends Service {
                 Assets.loadImage("pixel", (_) -> start2(options, font))));
     }
 
+    @:access(ecx.managers.WorldConstructor)
     private function start2(options:InitializationOptions, font:kha.Font):Void {
         //This part is supposed to be handled within ECX, but we really need Kha started before we call initialize on Services
         //So let's just hack it
-        for(service in @:privateAccess world._orderedServices) {
-            @:privateAccess service.initialize();
-        }
+        WorldConstructor.initializeServices(world);
 
         gWorld = world;
 

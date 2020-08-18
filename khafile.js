@@ -3,10 +3,10 @@ project.addAssets('Assets/**');
 project.addShaders('Shaders/**');
 project.addSources('Sources');
 
-project.addLibrary('ecx-sh');
+project.addLibrary('ecx');
 project.addLibrary('ds');
 project.addLibrary('zui');
-project.addLibrary('hscript');
+project.addLibrary('tweenx/src/tweenxcore');
 
 //polygonal/ds @:generic flag, its presence means enabled
 project.addDefine('generic');
