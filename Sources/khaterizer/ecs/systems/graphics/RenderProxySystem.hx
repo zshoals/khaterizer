@@ -8,11 +8,13 @@ import khaterizer.ecs.components.Spatial;
 /**
  * This is a proxy class.
  * 
- * Its only purpose is to route rendering data into the decoupled Renderer in khaterizer.graphics, since Renderer is not a service.
+ * Its only purpose is to route rendering data into the decoupled Renderer in khaterizer.services.graphics, since Services cannot query entities and
  * 
- * This class should still be added to the world config.
+ * in order for the Renderer to draw at arbitrary framerates it must be out of the system iteration loop.
  * 
- * If you are trying to create a lockstep renderer, then you can use this system directly to handle drawing.
+ * This class is mandatory to include in at least one of your world configurations without adjustments to Khaterizer.
+ * 
+ * If you are trying to create a lockstep renderer, then you can use this system directly to handle drawing instead.
  * **/
 class RenderProxySystem extends System {
 

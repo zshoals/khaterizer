@@ -27,10 +27,10 @@ class FastMatrix3Ext {
         scaleX:FastFloat, scaleY:FastFloat): FastMatrix3 {
 
         //Try and skip some of the more expensive operations if they're not needed
-        if (alpha == 0) {
+        if (MathUtil.withinEpsilon(alpha, 0)) {
             return FastMatrix3.translation(x - anchorX, y - anchorY).multmat(FastMatrix3.scale(scaleX, scaleY));
         }
-        else if (anchorX == 0 && anchorY == 0) {
+        else if (MathUtil.withinEpsilon(anchorX, 0) && MathUtil.withinEpsilon(anchorY, 0)) {
             return FastMatrix3.translation(x, y).multmat(FastMatrix3.rotation(alpha).multmat(FastMatrix3.scale(scaleX, scaleY)));
         }
         else {
