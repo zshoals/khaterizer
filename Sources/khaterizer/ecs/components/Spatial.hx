@@ -39,6 +39,7 @@ class SpatialData {
     //We should only do this once we start implementing lots of stationary objects
     //we aren't there yet lul
     //We can separate out dynamic and static objects. Static can be optimized since the transform will never change! that makes sense!
+    //Dynamic can just be drawn by the renderer every frame, it should be fine and easy that way.
     // public function buildTransform(anchor:Vector2): Void {
     //     this.transform = FastMatrix3.transformation(position.x, position.y, anchor.x, anchor.y, MathUtil.deg2rad(rotation), 1, 1);
     // }
