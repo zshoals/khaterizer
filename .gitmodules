@@ -1,0 +1,12 @@
+[submodule "Libraries/ecx"]
+	path = Libraries/ecx
+	url = https://github.com/zshoals/ecx.git
+[submodule "Libraries/ds"]
+	path = Libraries/ds
+	url = https://github.com/polygonal/ds.git
+[submodule "Libraries/zui"]
+	path = Libraries/zui
+	url = https://github.com/armory3d/zui.git
+[submodule "Libraries/tweenx"]
+	path = Libraries/tweenx
+	url = https://github.com/shohei909/tweenx.git
