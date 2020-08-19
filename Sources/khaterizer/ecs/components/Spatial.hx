@@ -10,7 +10,7 @@ class Spatial extends AutoComp<SpatialData>{}
 
 class SpatialData {
     public var position:Vector2;
-    public var rotation:Float;
+    public var rotation(default, set):Float;
     
     public var linearVelocity:Vector2;
     public var angularVelocity:Float;
@@ -32,6 +32,10 @@ class SpatialData {
         this.linearVelocity = linearVelocity == null ? new Vector2(0, 0) : linearVelocity;
         this.angularVelocity = angularVelocity == null ? 0 : angularVelocity;
         this.scale = scale == null ? new Vector2(1, 1) : scale;
+    }
+
+    function set_rotation(rotation:Float) {
+        return this.rotation = rotation % 360;
     }
 
     //Hacky, spatial data and the anchor point are likely in different places :/

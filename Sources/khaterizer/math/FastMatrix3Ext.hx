@@ -23,18 +23,20 @@ class FastMatrix3Ext {
     public static inline function transformationRaw(clazz:Class<FastMatrix3>, 
         x:FastFloat, y:FastFloat, 
         anchorX:FastFloat, anchorY:FastFloat, 
-        alpha:FastFloat, 
+        degrees:FastFloat, 
         scaleX:FastFloat, scaleY:FastFloat): FastMatrix3 {
 
         //Try and skip some of the more expensive operations if they're not needed
-        if (MathUtil.withinEpsilon(alpha, 0)) {
+        if (MathUtil.withinRotationTolerance(degrees)) {
             return FastMatrix3.translation(x - anchorX, y - anchorY).multmat(FastMatrix3.scale(scaleX, scaleY));
         }
-        else if (MathUtil.withinEpsilon(anchorX, 0) && MathUtil.withinEpsilon(anchorY, 0)) {
-            return FastMatrix3.translation(x, y).multmat(FastMatrix3.rotation(alpha).multmat(FastMatrix3.scale(scaleX, scaleY)));
+        else if (MathUtil.withinTolerance(anchorX) && MathUtil.withinTolerance(anchorY)) {
+            return FastMatrix3.translation(x, y).multmat(FastMatrix3.rotation(MathUtil.deg2rad(degrees)).multmat(FastMatrix3.scale(scaleX, scaleY)));
         }
         else {
-            return FastMatrix3.translation(x - anchorX, y - anchorY).multmat(FastMatrix3.rotationAround(anchorX, anchorY, alpha).multmat(FastMatrix3.scale(scaleX, scaleY)));
+            return FastMatrix3.translation(x - anchorX, y - anchorY)
+            .multmat(FastMatrix3.rotationAround(anchorX, anchorY, MathUtil.deg2rad(degrees))
+            .multmat(FastMatrix3.scale(scaleX, scaleY)));
         }
     }
 
@@ -43,7 +45,7 @@ class FastMatrix3Ext {
 
         Uses vectors instead of raw values. See FastMatrix3Ext.transformationRaw for parameter details.
     **/
-    public static inline function transformation(clazz:Class<FastMatrix3>, position:Vector2, anchor:Vector2, alpha:FastFloat, scale:Vector2): FastMatrix3 {
-        return FastMatrix3.transformationRaw(position.x, position.y, anchor.x, anchor.y, alpha, scale.x, scale.y);
+    public static inline function transformation(clazz:Class<FastMatrix3>, position:Vector2, anchor:Vector2, degrees:FastFloat, scale:Vector2): FastMatrix3 {
+        return FastMatrix3.transformationRaw(position.x, position.y, anchor.x, anchor.y, degrees, scale.x, scale.y);
     }
 }

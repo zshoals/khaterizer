@@ -77,21 +77,22 @@ class Renderer extends Service {
         camera.begin(backbuffer);
         g2.color = Color.White;
 
-        //TODO: REMOVE TEST STUFF
-        for (r in renderables) {
-            final spat = spatials.get(r);
-            final rect = rects.get(r);
-            final mid = rect.midpoint;
-            final pos = spat.position;
-            final rot = spat.rotation;
-            final scale = spat.scale;
-
+        {
             //TODO: REMOVE TEST STUFF
-            //We technically only have to update these each logical update, not every render
-            final trueResult = FastMatrix3.transformation(pos, mid, MathUtil.deg2rad(rot), scale);
-            g2.pushTransformation(trueResult);
-            g2.drawScaledImage(fillRectHack, 0, 0, rect.width, rect.height);
-            g2.popTransformation();
+            for (r in renderables) {
+                final spat = spatials.get(r);
+                final rect = rects.get(r);
+                final mid = rect.midpoint;
+                final pos = spat.position;
+                final rot = spat.rotation;
+                final scale = spat.scale;
+
+                //TODO: REMOVE TEST STUFF
+                //We technically only have to update these each logical update, not every render
+                g2.pushTransformation(FastMatrix3.transformation(pos, mid, rot, scale));
+                g2.drawScaledImage(fillRectHack, 0, 0, rect.width, rect.height);
+                g2.popTransformation();
+            }
         }
 
         camera.end();
