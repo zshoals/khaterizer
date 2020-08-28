@@ -4,7 +4,6 @@ import khaterizer.types.CppPerformanceHack;
 import ecx.Service;
 import kha.Window;
 import kha.WindowOptions;
-import khaterizer.types.ResizerMethod;
 
 class WindowConfiguration extends Service {
     public var verticalSynced(default, null):Bool;
@@ -24,7 +23,7 @@ class WindowConfiguration extends Service {
     public var windowBorderless(default, null):Bool;
     public var windowOnTop(default, null):Bool;
 
-    private var resizeCallbacks:Array<ResizeMethod>;
+    private var resizeCallbacks:Array<(x:Int, y:Int) -> Void>;
 
     public function new() {
         
@@ -43,13 +42,13 @@ class WindowConfiguration extends Service {
     /**
         Primarily used to scale RenderTargets in relation to the window in some way
     **/
-    public function notifyOnResize(callback:ResizeMethod):Void {
+    public function notifyOnResize(callback:(x:Int, y:Int) -> Void):Void {
         if (callback != null) {
             resizeCallbacks.push(callback);
         }
     }
 
-    public function removeResizeNotifier(callback:ResizeMethod):Void {
+    public function removeResizeNotifier(callback:(x:Int, y:Int) -> Void):Void {
         if (callback != null) {
             resizeCallbacks.remove(callback);
         }

@@ -90,13 +90,12 @@ class Khaterizer extends Service {
         //This part is supposed to be handled within ECX, but we really need Kha started before we call initialize on Services
         //So let's just hack it
         WorldConstructor.initializeServices(world);
-
         gWorld = world;
 
         Random.init(1337);
 
         engine.debugFont = font;
-        
+
         #if !khaterizer_unsafe_update_rates
         assert(options.updateRate > 0 && options.updateRate <= 300, "InitializationOptions update rate is very low or very high. Use the khafile define khaterizer_unsafe_update_rates to ignore this restriction.");
         #end

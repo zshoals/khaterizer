@@ -4,6 +4,7 @@ import khaterizer.types.CppPerformanceHack;
 import ecx.System;
 import khaterizer.ecs.components.graphics.Renderable;
 import khaterizer.ecs.components.Spatial;
+import khaterizer.ecs.components.StaticTransform;
 
 /**
  * This is a proxy class.
@@ -19,6 +20,7 @@ import khaterizer.ecs.components.Spatial;
 class RenderProxySystem extends System {
 
     public var renderables:Family<Renderable, Spatial>;
+    public var staticRenderables:Family<Renderable, Spatial, StaticTransform>;
 
     public function new(){
         

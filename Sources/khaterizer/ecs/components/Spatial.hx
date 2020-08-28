@@ -17,25 +17,23 @@ class SpatialData {
 
     public var scale:Vector2;
 
-    //public var transform:FastMatrix3;
-
     public function new(){}
 
     public function setup(
         position:Vector2,
-        ?rotation:Float, 
-        ?linearVelocity:Vector2, 
-        ?angularVelocity:Float,
-        ?scale:Vector2):Void {
+        rotation:Float, 
+        linearVelocity:Vector2, 
+        angularVelocity:Float,
+        scale:Vector2):Void {
         this.position = position;
-        this.rotation = rotation == null ? 0 : rotation;
-        this.linearVelocity = linearVelocity == null ? new Vector2(0, 0) : linearVelocity;
-        this.angularVelocity = angularVelocity == null ? 0 : angularVelocity;
-        this.scale = scale == null ? new Vector2(1, 1) : scale;
+        this.rotation = rotation;
+        this.linearVelocity = linearVelocity;
+        this.angularVelocity = angularVelocity;
+        this.scale = scale;
     }
 
-    function set_rotation(rotation:Float) {
-        return this.rotation = rotation % 360;
+    function set_rotation(f:Float):Float {
+        return rotation = f % 360;
     }
 
     //Hacky, spatial data and the anchor point are likely in different places :/

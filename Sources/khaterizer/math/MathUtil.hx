@@ -23,31 +23,27 @@ class MathUtil {
 
     public inline static function areClose(float1:Float, float2:Float, ?customEpsilon:Float): Bool {
         if (customEpsilon == null) {
-            return Math.abs(float1 - float2) < EPSILON;
+            customEpsilon = EPSILON;
         }
-        else {
-            trace(Math.abs(float1 - float2));
-            return Math.abs(float1 - float2) < customEpsilon;
-        }
+
+        return Math.abs(float1 - float2) < customEpsilon;
     }
 
     public inline static function withinTolerance(number:Float, ?customEpsilon:Float): Bool {
         if (customEpsilon == null) {
-            return MathUtil.areClose(number, 0);
+            customEpsilon = EPSILON;
         }
-        else {
-            return MathUtil.areClose(number, 0, customEpsilon);
-        }
+
+        return MathUtil.areClose(number, 0, customEpsilon);
     }
 
     public inline static function withinRotationTolerance(degrees:Float, ?customEpsilon:Float): Bool {
         degrees = Math.abs(degrees);
 
         if (customEpsilon == null) {
-            return (degrees > 360 - EPSILON || degrees < 0 + EPSILON);
+            customEpsilon = EPSILON;
         }
-        else {
-            return (degrees > 360 - customEpsilon || degrees < customEpsilon);
-        }
+
+        return (degrees > 360 - customEpsilon || degrees < customEpsilon);
     }
 }

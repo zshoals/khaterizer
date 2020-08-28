@@ -1,5 +1,6 @@
 package khaterizer.ecs.services.graphics;
 
+import khaterizer.ecs.components.StaticTransform;
 import khaterizer.util.TimerUtil;
 import khaterizer.math.FastMatrix3;
 using khaterizer.math.FastMatrix3Ext;
@@ -21,7 +22,6 @@ import khaterizer.ecs.components.graphics.Renderable;
 import khaterizer.ecs.services.graphics.WindowConfiguration;
 import khaterizer.ecs.systems.graphics.RenderProxySystem;
 import khaterizer.graphics.RenderTarget;
-import khaterizer.types.ResizerMethod;
 
 class Renderer extends Service {
     public var backbuffer:RenderTarget;
@@ -29,15 +29,17 @@ class Renderer extends Service {
     public var paused:Bool;
 
     var spatials:Wire<Spatial>;
+    var renderdata:Wire<Renderable>;
+    var staticTransforms:Wire<StaticTransform>;
     var renderSystem:Wire<RenderProxySystem>;
     var renderables:EntityVector;
+    var staticRenderables:EntityVector;
     var rects:Wire<Rect>;
     var camera:Wire<Camera>;
     var engine:Wire<EngineConfiguration>;
 
     var window:Wire<WindowConfiguration>;
-    var resizerFunction:ResizeMethod;
-
+    
     var fillRectHack:Image;
 
     private var initialized:Bool = false;
@@ -52,6 +54,8 @@ class Renderer extends Service {
             backbuffer = new RenderTarget(backbufferWidth, backbufferHeight, resolutionWidth, resolutionHeight, resolutionSizingStrategy, scaleMode);
 
             renderables = renderSystem.renderables;
+            staticRenderables = renderSystem.staticRenderables;
+
             backbuffer.g2.font = engine.debugFont;
             backbuffer.g2.fontSize = 12;
 
@@ -82,16 +86,35 @@ class Renderer extends Service {
             for (r in renderables) {
                 final spat = spatials.get(r);
                 final rect = rects.get(r);
-                final mid = rect.midpoint;
+                final rdata = renderdata.get(r);
+
                 final pos = spat.position;
+                final mid = rect.midpoint;
                 final rot = spat.rotation;
                 final scale = spat.scale;
+                
+                //We shouldn't even have to make this check
+                //Instead, guarantee it somehow whenever a renderable is constructed
+                if (rdata.transformation == null) {
+                    rdata.buildTransform(pos, mid, rot, scale);
+                }
 
-                //TODO: REMOVE TEST STUFF
+                //TODO: REMOVE TEST STUFF, we need an actual way to set the anchor point for instance
                 //We technically only have to update these each logical update, not every render
-                g2.pushTransformation(FastMatrix3.transformation(pos, mid, rot, scale));
-                g2.drawScaledImage(fillRectHack, 0, 0, rect.width, rect.height);
-                g2.popTransformation();
+
+                //Checking if the element is actually on screen before drawing is a massive performance increase...
+                //...obviously.
+                //Let's find a way to get an "inDrawRegion() (+ guarantee the image is drawn if any portion is in the draw region + extra buffer just in case) function ready :)!
+                if (pos.x < backbuffer.width && pos.x > 0 && pos.y < backbuffer.height && pos.y > 0) {
+                    if (staticTransforms.has(r)) {
+                        g2.pushTransformation(rdata.transformation);
+                    }
+                    else {
+                        g2.pushTransformation(FastMatrix3.transformation(pos, mid, rot, scale));
+                    }
+                    g2.drawScaledImage(fillRectHack, 0, 0, rect.width, rect.height);
+                    g2.popTransformation();
+                }
             }
         }
 

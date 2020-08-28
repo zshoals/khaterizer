@@ -18,7 +18,6 @@ import kha.input.KeyCode;
 import kha.input.Keyboard;
 import khaterizer.ecs.services.graphics.Renderer;
 import khaterizer.ecs.services.graphics.WindowConfiguration;
-import khaterizer.input.Keypress;
 import khaterizer.util.TimerUtil;
 import kha.System;
 

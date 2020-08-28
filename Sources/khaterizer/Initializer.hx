@@ -3,7 +3,6 @@ package khaterizer;
 import ecx.World;
 import ecx.WorldConfig;
 import ecx.Engine;
-import khaterizer.input.Keypress;
 import khaterizer.ecs.blueprints.*;
 import khaterizer.ecs.components.*;
 import khaterizer.ecs.components.collision.*;
@@ -57,6 +56,7 @@ class Initializer {
         config.add(new CollisionRect());
         config.add(new Spatial());
         config.add(new Renderable());
+        config.add(new StaticTransform());
         #end
 
         //==Initialize==

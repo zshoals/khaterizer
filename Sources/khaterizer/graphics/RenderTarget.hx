@@ -154,7 +154,7 @@ class RenderTarget implements Canvas {
         }
     }
 
-    private inline function resizeGrow(cWidth:Int, cHeight:Int):Void {
+    private function resizeGrow(cWidth:Int, cHeight:Int):Void {
         if (cWidth > this.resolutionWidth || cHeight > this.resolutionHeight) {
             resize(cWidth, cHeight);
         }
@@ -163,13 +163,13 @@ class RenderTarget implements Canvas {
         }
     }
 
-    private inline function resizeGrowAndShrink(cWidth:Int, cHeight:Int):Void {
+    private function resizeGrowAndShrink(cWidth:Int, cHeight:Int):Void {
         if (this.width != cWidth || this.height != cHeight) {
             resize(cWidth, cHeight);
         }
     }
 
-    private inline function resizeShrink(cWidth:Int, cHeight:Int):Void {
+    private function resizeShrink(cWidth:Int, cHeight:Int):Void {
         if (cWidth < this.resolutionWidth || cHeight < this.resolutionHeight) {
             resize(cWidth, cHeight);
         }
