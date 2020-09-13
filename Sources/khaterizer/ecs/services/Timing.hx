@@ -17,9 +17,7 @@ class Timing extends Service {
     private var adjustedTime:Float;
     private var multiplier:Float;
 
-    public function new() {
-        
-    }
+    public function new() {}
 
     override function initialize():Void {
         timeScale = 1.0;
@@ -47,6 +45,8 @@ class Timing extends Service {
 
     /**
         Deltatime, Timescale, and an overall ResultMultiplier combined. Premultiplied for convenience.
+
+        Generally speaking, you should multiply by this value instead of dt().
     **/
     public inline function adjusted():Float {
         return adjustedTime;

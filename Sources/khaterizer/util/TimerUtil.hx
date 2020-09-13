@@ -74,4 +74,10 @@ class TimerUtil {
     public inline function currentReal():Float {
         return Scheduler.realTime();
     }
+
+    public static inline function run(func:Void->Void):Float {
+        final startTime = Scheduler.realTime();
+        func();
+        return Scheduler.realTime() - startTime;
+    }
 }

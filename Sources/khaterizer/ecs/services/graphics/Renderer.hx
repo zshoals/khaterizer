@@ -4,7 +4,6 @@ import khaterizer.ecs.components.StaticTransform;
 import khaterizer.util.TimerUtil;
 import khaterizer.math.FastMatrix3;
 using khaterizer.math.FastMatrix3Ext;
-import khaterizer.types.CppPerformanceHack;
 import khaterizer.math.Random;
 import ecx.Service;
 import ecx.types.EntityVector;
@@ -68,7 +67,7 @@ class Renderer extends Service {
             initialized = true;
         }
         else {
-            throw "Renderer should only be initialized once.";
+            throw new khaterizer.KhatError("Renderer should only be initialized once");
         }
     }
 
@@ -83,6 +82,13 @@ class Renderer extends Service {
 
         {
             //TODO: REMOVE TEST STUFF
+
+            //To sort
+            //Create an array of arrays of layerids
+            //if a layer has not been created before, create one (push a new layerID associated array)
+            //Store entity vectors inside the appropriate layer array
+            //Keep track of how many entities were added
+            //render each according to layer order
             for (r in renderables) {
                 final spat = spatials.get(r);
                 final rect = rects.get(r);
@@ -95,6 +101,10 @@ class Renderer extends Service {
                 
                 //We shouldn't even have to make this check
                 //Instead, guarantee it somehow whenever a renderable is constructed
+
+                //"Add Static Image" Blueprint
+                //Some things should be handled as specific blueprint tools, this seems to be one of them
+                //It creates the transform for the object
                 if (rdata.transformation == null) {
                     rdata.buildTransform(pos, mid, rot, scale);
                 }

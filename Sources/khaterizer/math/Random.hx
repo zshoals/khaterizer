@@ -8,39 +8,37 @@ package khaterizer.math;
 
 // Why xoshiro128** and not a more secure implementation? Because I don't know how to handle 64bit uints in a pleasant crossplatform way :^)
 class Random {
-    private var s0:Int;
-    private var s1:Int;
-    private var s2:Int;
-    private var s3:Int;
+    private var s:Array<Int>;
 
     public function new(seed: Int): Void {
-        s0 = seed;
-        s1 = 0;
-        s2 = 0;
-        s3 = 0;
+        s = [seed, 0x1337beef, 0x00bad1ad, 0x0120bbed];
 
         //Immediately skip some trash results
         for (i in 0...10) {
             this.Get();
         }
     }
-
+    
     public function Get(): Int {
-        final result = rotl(s1 * 5, 7) * 9;
+        final result = (rotl(s[1] * 5, 7) * 9) & 0x7ffffffe;
+        
+        final t = (s[1] << 9);
 
-        //Unsign right shift anything that's supposed to be a uint32
-        final t = (s1 << 9) >>> 1;
+        s[2] ^= s[0];
+        s[3] ^= s[1];
+        s[1] ^= s[2];
+        s[0] ^= s[3];
 
-        s2 ^= s0;
-        s3 ^= s1;
-        s1 ^= s2;
-        s0 ^= s3;
+        s[2] ^= t;
 
-        s2 ^= t;
+        s[3] = rotl(s[3], 11);
 
-        s3 = rotl(s3, 11);
+        return result;
+    }
 
-        return result >>> 1;
+    private inline function rotl(x:Int, k:Int):Int {
+        x &= 0x7ffffffe;
+        return ((x << k) | (x >> (32 - k)));
     }
     
     public function GetFloat(): Float {
@@ -57,11 +55,6 @@ class Random {
     
     public function GetFloatIn(min: Float, max: Float): Float {
         return min + GetFloat() * (max - min);
-    }
-
-    private inline function rotl(x:Int, k:Int):Int {
-        x >>>= 1;
-        return ((x << k) | (x >> (32 - k)));
     }
     
     public static var Default: Random;

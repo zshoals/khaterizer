@@ -87,12 +87,12 @@ class Khaterizer extends Service {
 
     @:access(ecx.managers.WorldConstructor)
     private function start2(options:InitializationOptions, font:kha.Font):Void {
+        Random.init(1337);
+
         //This part is supposed to be handled within ECX, but we really need Kha started before we call initialize on Services
         //So let's just hack it
         WorldConstructor.initializeServices(world);
         gWorld = world;
-
-        Random.init(1337);
 
         engine.debugFont = font;
 

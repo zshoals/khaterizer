@@ -33,8 +33,7 @@ class WindowConfiguration extends Service {
         resizeCallbacks = [];
 
         Window.get(0).notifyOnResize((x:Int, y:Int) -> {
-            this.width = x;
-            this.height = y;
+            setWindowSize(x, y);
             callResizeCallbacks(width, height);
         });
     }

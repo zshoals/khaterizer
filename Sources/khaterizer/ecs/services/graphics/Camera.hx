@@ -45,7 +45,7 @@ class Camera extends Service {
     }
 
     public function begin(canvas:Canvas):Void {
-        if (running) throw "End camera before you begin! The classic error returns to haunt you!";
+        assert(!running, "End camera before you begin! The classic error returns to haunt you!");
         running = true;
         
         if (this.zoom < 0.1) {
@@ -80,7 +80,7 @@ class Camera extends Service {
     }
 
     public function end():Void {
-        if (!running) throw "Begin camera before you end! The classic error returns to haunt you!";
+        assert(running, "Begin camera before you end! The classic error returns to haunt you!");
         running = false;
         
         this.graphics.popTransformation();
@@ -135,8 +135,8 @@ class Camera extends Service {
     }
 
     public function move(x:Int, y:Int):Void {
-        this.x = x;
-        this.y = y;
+        this.x = x - window.centerWidth;
+        this.y = y - window.centerHeight;
 
         this.dirty = true;
     }

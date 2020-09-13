@@ -17,7 +17,6 @@ import khaterizer.math.Vector2;
 
 
 class TesterSystem extends System {
-
     var _firstRun:Bool;
     var _rand:Random;
     var _loc:Wire<Spatial>;
@@ -27,9 +26,7 @@ class TesterSystem extends System {
     var window:Wire<Renderer>;
     var count:Int;
 
-    public function new() {
-        
-    }
+    public function new() {}
 
     override function initialize() {
         _rand = new Random(133742069);
