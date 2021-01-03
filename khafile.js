@@ -7,6 +7,7 @@ project.addLibrary('ecx');
 project.addLibrary('ds');
 project.addLibrary('zui');
 project.addLibrary('tweenx/src/tweenxcore');
+project.addLibrary('utest');
 
 //polygonal/ds @:generic flag, its presence means enabled
 project.addDefine('generic');
