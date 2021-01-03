@@ -2,7 +2,7 @@ package khaterizer.math;
 
 import kha.FastFloat;
 import kha.simd.Float32x4;
-import khaterizer.math.FastMatrix3;
+import kha.math.FastMatrix3;
 using khaterizer.math.FastMatrix3Ext; //Have to use yourself. That's just strange mate.
 
 class FastMatrix3Ext {

@@ -12,5 +12,7 @@ project.addLibrary('utest');
 //polygonal/ds @:generic flag, its presence means enabled
 project.addDefine('generic');
 project.addDefine('khaterizer_default_services_enabled');
+project.addDefine('UTEST_PRINT_TESTS');
+//project.addDefine('UTEST_FAILURE_THROW');
 
 resolve(project);
