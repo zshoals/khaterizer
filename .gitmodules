@@ -10,6 +10,3 @@
 [submodule "Libraries/tweenx"]
 	path = Libraries/tweenx
 	url = https://github.com/shohei909/tweenx.git
-[submodule "Libraries/utest"]
-	path = Libraries/utest
-	url = https://github.com/haxe-utest/utest.git
