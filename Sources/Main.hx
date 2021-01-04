@@ -11,9 +11,7 @@ class Main {
 		System.start({title: "Khaterizer Core", width: 1280, height: 720}, init);
 	}
 
-	@:keep
 	static function init(window:Window) {
-		trace("Init");
 		TestAll.main();
 	}
 }
