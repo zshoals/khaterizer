@@ -127,9 +127,9 @@ class Random extends kha.math.Random {
 	@:generic
 	public function WeightedSelection<T>(weights: Map<T, Float>): Array<T> { return []; }
 
-	//===================
+	//====================
 	//==Static Interface==
-	//===================
+	//====================
 	private static var instance: Random;
 	private static var initialized: Bool = false;
 
