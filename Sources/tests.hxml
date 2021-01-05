@@ -1,8 +1,0 @@
--cp Sources
--lib utest
--cp C:\Users\Zanarias\Desktop\Programming_Projects\Khaterizer\Libraries\ds
--cp C:\Users\Zanarias\Desktop\Programming_Projects\Khaterizer\Libraries\ecx
--cp C:\Users\Zanarias\Desktop\Programming_Projects\Khaterizer\Libraries\tweenx
--cp C:\Users\Zanarias\Desktop\Programming_Projects\Khaterizer\Libraries\zui
--cp C:\HaxeLibraries\Kha
--main TestAll
