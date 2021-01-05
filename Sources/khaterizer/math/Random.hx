@@ -1,11 +1,12 @@
 package khaterizer.math;
 
+using Lambda;
+
 /**
 	A suite of tools for random number generation, random element selection, and so on.
 
 	Random.init() MUST be fired. So add this as a startup configuration setting.
 **/
-
 class Random extends kha.math.Random {
 	public function new(seed: Int) {
 		super(seed);
@@ -121,11 +122,24 @@ class Random extends kha.math.Random {
 		return selection;
 	}
 
+	//https://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python/
 	/**
-		TODO: IMPLEMENT ME
+		Returns an index linked to the selected weight from `weights`
 	**/
-	@:generic
-	public function WeightedSelection<T>(weights: Map<T, Float>): Array<T> { return []; }
+	public function WeightedSelection(weights: Array<Float>): Int {
+		var sum = inline weights.fold((item, result) -> result += item, 0);
+		var rand = this.GetFloat() * sum;
+
+		for (i in 0...weights.length) {
+			rand -= weights[i];
+			if (rand < 0) {
+				return i;
+			}
+		}
+
+		throw "Reached a supposedly unreachable location. Verify this function's design ASAP! WeightedSelection in Random.";
+		return 0;
+	}
 
 	//====================
 	//==Static Interface==
@@ -199,8 +213,7 @@ class Random extends kha.math.Random {
 		return instance.RepeatableSelection(arr, amount);
 	}
 
-	@:generic
-	public static function weightedSelection<T>(weights: Map<T, Float>): Array<T> {
+	public static function weightedSelection(weights: Array<Float>): Int {
 		return instance.WeightedSelection(weights);
 	}
 }

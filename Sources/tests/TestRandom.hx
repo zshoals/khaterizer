@@ -110,6 +110,22 @@ class TestRandom extends utest.Test {
 		Assert.isTrue(result.length == 0);
 	}
 
+	public function testWeighted() {
+		var weights: Array<Float> = [500, 300, 100];
+		var idx = random.WeightedSelection(weights);
+
+		Assert.equals(0, idx, "IDX was " + idx);
+	}
+
+	public function testWeightedInRange() {
+		var weights: Array<Float> = [400, 400, 400];
+
+		for (i in 0...100) {
+			var idx = random.WeightedSelection(weights);
+			Assert.isTrue((0 <= idx) && (idx <= 2), "Index out of range");
+		}
+	}
+
 	public function testBiasCoinflip() {
 		var out = random.BiasedCoinflip(0.2);
 		Assert.equals(true, out, "Biased coinflip failed with a value of" + randVerify.GetFloat());
