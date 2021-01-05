@@ -1,5 +1,6 @@
 package;
 
+import khaterizer.InitOptions;
 import khaterizer.math.Vec2;
 import khaterizer.math.Random;
 import kha.Window;
@@ -10,6 +11,16 @@ import kha.System;
 
 class Main {
 	public static function main() {
+		var options: InitOptions = {
+			title: "Khaterizer Core",
+			width: 1280,
+			height: 720,
+			systemUpdateRate: 60
+		};
+
+		//Initialize Khaterizer and pass in options
+		//System.start begins in there
+
 		System.start({title: "Khaterizer Core", width: 1280, height: 720}, init);
 	}
 
