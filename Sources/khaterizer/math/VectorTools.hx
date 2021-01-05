@@ -1,5 +1,8 @@
 package khaterizer.math;
 
+/**
+    Grab bag collection of useful Vector functions
+**/
 class VectorTools {
     public static var random:Random;
 
