@@ -26,7 +26,8 @@ class Main {
 
 	static function init(window:Window) {
 		//TestAll.main();
-		throw "hello";
+		Random.init(456346);
+		throw new js.lib.Error("WTF");
 		Random.init(1337);
 	}
 }

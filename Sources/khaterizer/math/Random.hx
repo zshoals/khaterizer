@@ -137,7 +137,7 @@ class Random extends kha.math.Random {
 			}
 		}
 
-		throw "Reached a supposedly unreachable location. Verify this function's design ASAP! WeightedSelection in Random.";
+		throw "Reached a supposedly unreachable location. Verify this function's design ASAP!";
 		return 0;
 	}
 
