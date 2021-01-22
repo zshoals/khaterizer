@@ -9,7 +9,7 @@ package khaterizer.math;
 	Otherwise, Khaterizer's global static instance is used.
 **/
 class VecExtension {
-	private static var random:KtzRandom;
+	private static var random: KtzRandom;
 
 	/**
 		Generates a random vector within the bounds provided.
@@ -26,6 +26,11 @@ class VecExtension {
 		var clampedY = KtzMath.clamp(vec.y, vecMin.y, vecMax.y);
 
 		return new KtzVec2(clampedX, clampedY);
+	}
+
+	@:extern
+	public inline static function angleInKtzDegrees(clazz: KtzVec2, v: KtzVec2): KtzDegrees {
+		return new KtzDegrees(clazz.angle(v));
 	}
 
 	public static function assignRNG(rng: KtzRandom): Void {
