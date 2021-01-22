@@ -1,6 +1,6 @@
 package khaterizer.math;
 
-class MathUtil {
+class KtzMath {
 	public inline static var EPSILON:Float = 0.0000001;
 
 	public inline static function truncate(number:Float, precision:Int): Float {
@@ -34,7 +34,7 @@ class MathUtil {
 			customEpsilon = EPSILON;
 		}
 
-		return MathUtil.areClose(number, 0, customEpsilon);
+		return KtzMath.areClose(number, 0, customEpsilon);
 	}
 
 	public inline static function withinRotationTolerance(degrees:Float, ?customEpsilon:Float): Bool {

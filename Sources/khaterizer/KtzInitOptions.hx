@@ -3,7 +3,7 @@ package khaterizer;
 import kha.WindowMode;
 
 @:structInit
-class InitOptions {
+class KtzInitOptions {
 	@:optional public var title: String = "Khaterizer Project";
 	@:optional public var x: Int = -1;
 	@:optional public var y: Int = -1;

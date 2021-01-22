@@ -7,7 +7,7 @@ using Lambda;
 
 	Random.init() MUST be fired. So add this as a startup configuration setting.
 **/
-class Random extends kha.math.Random {
+class KtzRandom extends kha.math.Random {
 	public function new(seed: Int) {
 		super(seed);
 	}
@@ -144,12 +144,12 @@ class Random extends kha.math.Random {
 	//====================
 	//==Static Interface==
 	//====================
-	private static var instance: Random;
+	private static var instance: KtzRandom;
 	private static var initialized: Bool = false;
 
 	public static function init(seed: Int) {
 		if (initialized) return;
-		instance = new Random(seed);
+		instance = new KtzRandom(seed);
 		initialized = true;
 	}
 

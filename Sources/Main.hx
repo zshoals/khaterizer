@@ -1,8 +1,8 @@
 package;
 
-import khaterizer.InitOptions;
-import khaterizer.math.Vec2;
-import khaterizer.math.Random;
+import khaterizer.KtzInitOptions;
+import khaterizer.math.KtzVec2;
+import khaterizer.math.KtzRandom;
 import kha.Window;
 import kha.Assets;
 import kha.Framebuffer;
@@ -11,7 +11,7 @@ import kha.System;
 
 class Main {
 	public static function main() {
-		var options: InitOptions = {
+		var options: KtzInitOptions = {
 			title: "Khaterizer Core",
 			width: 1280,
 			height: 720,
@@ -26,8 +26,9 @@ class Main {
 
 	static function init(window:Window) {
 		//TestAll.main();
-		Random.init(456346);
-		throw new js.lib.Error("WTF");
-		Random.init(1337);
+		KtzRandom.init(456346);
+		//throw new js.lib.Error("WTF");
+		throw "WTF";
+		KtzRandom.init(1337);
 	}
 }

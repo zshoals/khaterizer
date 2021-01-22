@@ -2,6 +2,6 @@ import ecx.Entity;
 import ecx.Wire;
 import ecx.Family;
 
-import khaterizer.math.MathUtil;
-import khaterizer.math.VecExtension;
-import khaterizer.math.Vec2;
+import khaterizer.math.KtzMath;
+import khaterizer.math.KtzVec2Extension;
+import khaterizer.math.KtzVec2;
