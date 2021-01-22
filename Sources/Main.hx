@@ -25,7 +25,7 @@ class Main {
 	}
 
 	static function init(window:Window) {
-		//TestAll.main();
+		TestAll.main();
 		KtzRandom.init(456346);
 		//throw new js.lib.Error("WTF");
 		throw "WTF";

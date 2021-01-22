@@ -30,7 +30,7 @@ abstract KtzDegrees(Float) {
 		return new KtzVec2(Math.cos(KtzMath.deg2rad(this)), Math.sin(KtzMath.deg2rad(this)));
 	}
 
-	public inline function angleFromKtzVec2(vec:KtzVec2): KtzDegrees {
-		return new KtzDegrees(KtzMath.rad2deg(Math.atan2(vec.x, vec.y)));
+	public static inline function angleFromKtzVec2(vec:KtzVec2): KtzDegrees {
+		return new KtzDegrees(KtzMath.rad2deg(Math.atan2(vec.y, vec.x)));
 	}
 }

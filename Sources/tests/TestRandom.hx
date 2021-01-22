@@ -1,15 +1,15 @@
 package tests;
 
 import utest.Assert;
-import khaterizer.math.Random;
+import khaterizer.math.KtzRandom;
 
 class TestRandom extends utest.Test {
-	var random:Random;
-	var randVerify:Random;
+	var random:KtzRandom;
+	var randVerify:KtzRandom;
 
 	public function setup() {
-		random = new Random(0x12088312);
-		randVerify = new Random(0x12088312);
+		random = new KtzRandom(0x12088312);
+		randVerify = new KtzRandom(0x12088312);
 	}
 
 	public function testAmassInts() {
