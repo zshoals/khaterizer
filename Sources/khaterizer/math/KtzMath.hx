@@ -29,14 +29,6 @@ class KtzMath {
 		return Math.abs(float1 - float2) < customEpsilon;
 	}
 
-	public inline static function withinTolerance(number:Float, ?customEpsilon:Float): Bool {
-		if (customEpsilon == null) {
-			customEpsilon = EPSILON;
-		}
-
-		return KtzMath.areClose(number, 0, customEpsilon);
-	}
-
 	public inline static function withinRotationTolerance(degrees:Float, ?customEpsilon:Float): Bool {
 		degrees = Math.abs(degrees);
 
