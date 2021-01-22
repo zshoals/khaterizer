@@ -10,20 +10,20 @@ abstract KtzDegrees(Float) {
 		return this % 360;
 	}
 
-	public inline function add(f:Float): KtzDegrees {
-		return new KtzDegrees((this + f) % 360);
+	public inline function add(f:KtzDegrees): KtzDegrees {
+		return new KtzDegrees((this + f.toFloat()) % 360);
 	}
 
-	public inline function sub(f:Float): KtzDegrees {
-		return new KtzDegrees((this - f) % 360);
+	public inline function sub(f:KtzDegrees): KtzDegrees {
+		return new KtzDegrees((this - f.toFloat()) % 360);
 	}
 
-	public inline function mult(f:Float): KtzDegrees {
-		return new KtzDegrees((this * f) % 360);
+	public inline function mult(f:KtzDegrees): KtzDegrees {
+		return new KtzDegrees((this * f.toFloat()) % 360);
 	}
 
-	public inline function div(f:Float): KtzDegrees {
-		return new KtzDegrees((this / f) % 360);
+	public inline function div(f:KtzDegrees): KtzDegrees {
+		return new KtzDegrees((this / f.toFloat()) % 360);
 	}
 
 	public inline function makeUnitKtzVec2(): KtzVec2 {
