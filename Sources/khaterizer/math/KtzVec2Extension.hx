@@ -8,7 +8,7 @@ package khaterizer.math;
 
 	Otherwise, Khaterizer's global static instance is used.
 **/
-class VecExtension {
+class KtzVec2Extension {
 	private static var random: KtzRandom;
 
 	/**
