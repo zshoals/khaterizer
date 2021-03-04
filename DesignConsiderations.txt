@@ -1,0 +1,10 @@
+-Avoid allocations. For value types (FastVectors, Vectors, Matrices, etc.) make sure they're inlined/abstract.
+	If inlined, make sure that there is a container for the value type and then use setFrom() instead of assigned a new value type.
+	IE. Class Position has inline Vector2 "vec". If "vec" is updated, it must be done through setFrom().
+	IE2. When sending out a new value type to a function, make sure that that value type does not allocate.
+		Either use functions which take the split form of the value type or use a persistent container in the current scope that is updated with
+		setFrom() and then sent to the function accepting the value type. A persistent container might cause multithreading issues, but who cares.
+
+-Tracing out values (Continued from avoiding allocations);
+	Using a toString() override on an inline value class seems to break inlining if it's ever used. Instead, create a custom trace function.
+	IE. on a ClampedFloat class, add this function: public inline function readValue(): Void { trace(this.value); }

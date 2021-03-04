@@ -1,5 +1,6 @@
 package;
 
+import kha.Shaders;
 import khaterizer.KtzInitOptions;
 import khaterizer.math.KtzVec2;
 import khaterizer.math.KtzRandom;
@@ -25,10 +26,7 @@ class Main {
 	}
 
 	static function init(window:Window) {
-		TestAll.main();
+		//TestAll.main();
 		KtzRandom.init(456346);
-		//throw new js.lib.Error("WTF");
-		throw "WTF";
-		KtzRandom.init(1337);
 	}
 }
