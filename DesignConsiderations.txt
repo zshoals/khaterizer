@@ -8,3 +8,13 @@
 -Tracing out values (Continued from avoiding allocations);
 	Using a toString() override on an inline value class seems to break inlining if it's ever used. Instead, create a custom trace function.
 	IE. on a ClampedFloat class, add this function: public inline function readValue(): Void { trace(this.value); }
+	Alternatively, always use the value directly in a trace, IE trace(object.value).
+
+-Distinction between Entity tags and components
+	Tags are just run time flags for systems. This can probably just be a series of bitfields/an array, maybe? We want to avoid full fledged objects here.
+	Maybe we can check for a reference to an object or something, IDK.
+	Components are actual objects that contain data,
+	and maybe a convenience function or two.
+
+-Use final classes as much as possible
+	Might fix dynamic dispatch issues (performance cost) since the compiler can guarantee that the class is no longer being extended.

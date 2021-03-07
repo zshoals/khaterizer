@@ -1,0 +1,9 @@
+-Split Scene Region for Rendering
+	For kicks, make it so that multiple "cameras" can be rendered onto the same window easily. Be able to slice the window into sections.
+	This kind of just sounds fun to do.
+
+-HardClamp Shader for Atlas Sprites
+	A shader element that records the original pixel color before a distortion effect. Stores a beforeDistort and afterDistort position for a bounding box.
+	If the distorted bounding box doesn't encapsulate the pixel, then restore it to its original color (? maybe)
+
+-Do we have to sort on Shader uniforms as well?
