@@ -25,9 +25,8 @@ class Main {
 		System.start({title: "Khaterizer Core", width: 1280, height: 720}, init);
 	}
 
-	static function init(window:Window) {
+	static function init(windowikm:Window) {
 		//TestAll.main();
 		KtzRandom.init(456346);
-		var x = new khaterizer.components.graphics.KtzCameraComp();
 	}
 }
