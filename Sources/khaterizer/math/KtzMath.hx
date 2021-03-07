@@ -21,6 +21,21 @@ class KtzMath {
 		return radians * 180 / Math.PI;
 	}
 
+	/**
+	 * Remaps a number from one range to another. Stolen from HaxeFlixel.
+	 *
+	 * @param 	value	The incoming value to be converted
+	 * @param 	start1 	Lower bound of the value's current range
+	 * @param 	stop1 	Upper bound of the value's current range
+	 * @param 	start2  Lower bound of the value's target range
+	 * @param 	stop2 	Upper bound of the value's target range
+	 * @return The remapped value
+	 */
+	public inline static function remap(value: Float, start1: Float, stop1: Float, start2: Float, stop2: Float): Float
+	{
+		return start2 + (value - start1) * ((stop2 - start2) / (stop1 - start1));
+	}
+
 	public inline static function areClose(float1: Float, float2: Float, ?customEpsilon: Float): Bool {
 		if (customEpsilon == null) {
 			customEpsilon = EPSILON;
