@@ -9,9 +9,9 @@ abstract KtzNormalizedRange(Float) to Float {
 	}
 
 	public static inline function normalize(value: Float, initialLowRange: Float, initialHighRange: Float): KtzNormalizedRange {
-		if (initialLowRange >= initialHighRange || initialHighRange <= initialLowRange) {
-			throw "lowRange value higher than the highRange end value or highRange value lower than the lowRange end value.";
-		}
+		assert(initialLowRange < initialHighRange, "lowRange must be lower than highRange");
+		assert(initialHighRange > initialLowRange, "highRange must be higher than lowRange");
+		assert(value >= initialLowRange && value <= initialHighRange, "value must be between low and high ranges");
 		return new KtzNormalizedRange(KtzMath.remap(value, initialLowRange, initialHighRange, 0, 1));
 	}
 }

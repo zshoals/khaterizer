@@ -28,5 +28,6 @@ class Main {
 	static function init(window:Window) {
 		//TestAll.main();
 		KtzRandom.init(456346);
+		var x = new khaterizer.components.graphics.KtzCameraComp();
 	}
 }
