@@ -21,6 +21,7 @@ final class KtzCameraComp /*implements IComponent*/ {
 	private var projectionMatrix: KtzFastMat3;
 	private var viewMatrix: KtzFastMat3;
 
+	//Maybe this should be accessible from elsewhere? Maybe it's not even needed and we can segment things without rendertargets
 	private var drawSurface: Image;
 
 	public function new() {
