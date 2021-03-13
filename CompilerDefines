@@ -1,2 +1,3 @@
 ktz_disable_assertions
 ktz_disable_logging
+(needs used) ktz_disable_render_statistics

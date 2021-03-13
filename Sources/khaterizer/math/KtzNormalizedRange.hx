@@ -1,11 +1,13 @@
 package khaterizer.math;
 
 /**
-	Float value clamped between 0 and 1
+	A Float value between 0 and 1, inclusive. Creating a new instance results in a clamped value between 0 and 1.
+
+	Use normalize to map a value between 0 and 1.
 **/
 abstract KtzNormalizedRange(Float) to Float {
-	private inline function new(f: Float) {
-		this = f;
+	public inline function new(f: Float) {
+		this = KtzMath.clamp(f, 0, 1);
 	}
 
 	public static inline function normalize(value: Float, initialLowRange: Float, initialHighRange: Float): KtzNormalizedRange {

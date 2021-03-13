@@ -11,23 +11,23 @@ class KtzLog {
 		#end
 	}
 
-	public function info(message: String, ?pos: haxe.PosInfos): Void {
+	public inline function info(message: String, ?pos: haxe.PosInfos): Void {
 		impl.info(message, pos);
 	}
 
-	public function debug(message: String, ?pos: haxe.PosInfos): Void {
+	public inline function debug(message: String, ?pos: haxe.PosInfos): Void {
 		impl.debug(message, pos);
 	}
 
-	public function warn(message: String, ?pos: haxe.PosInfos): Void {
+	public inline function warn(message: String, ?pos: haxe.PosInfos): Void {
 		impl.warn(message, pos);
 	}
 
-	public function error(message: String, ?pos: haxe.PosInfos): Void {
+	public inline function error(message: String, ?pos: haxe.PosInfos): Void {
 		impl.error(message, pos);
 	}
 
-	public function critical(message: String, ?pos: haxe.PosInfos): Void {
+	public inline function critical(message: String, ?pos: haxe.PosInfos): Void {
 		impl.critical(message, pos);
 	}
 

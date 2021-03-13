@@ -25,7 +25,7 @@ class Main {
 		System.start({title: "Khaterizer Core", width: 1280, height: 720}, init);
 	}
 
-	static function init(windowikm:Window) {
+	static function init(window:Window) {
 		//TestAll.main();
 		KtzRandom.init(456346);
 	}
