@@ -2,7 +2,7 @@ package khaterizer.pirandello.data;
 
 import haxe.ds.Option;
 
-@:forward(push, pop, length)
+@:forward(push, pop, length, remove)
 abstract Components(Array<Component>) {
 	public inline function new() {
 		this = new Array<Component>();
@@ -23,8 +23,13 @@ abstract Components(Array<Component>) {
 		return None;
 	}
 
-	public inline function getByIndex(idx: Int): Component {
-		return this[idx];
+	public inline function getByIndex(idx: Int): Option<Component> {
+		if (idx != null) {
+			return Some(this[idx]);
+		}
+		else {
+			return None;
+		}
 	}
 
 	public inline function removeByIndex(idx: Int): Void {
