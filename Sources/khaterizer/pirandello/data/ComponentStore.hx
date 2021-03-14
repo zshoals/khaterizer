@@ -1,11 +1,23 @@
 package khaterizer.pirandello.data;
 
-import haxe.ds.Option;
+/**
+	All Component Types are guaranteed to set an array of their corresponding component.
+**/
+abstract ComponentStore(Map<ComponentType, Components>) {
+	public inline function new(activeComponents: Array<ComponentType>) {
+		this = new Map<ComponentType, Components>();
 
-abstract ComponentStore(Map<Class<Component>, Components>) {
-	public inline function new() {
-		this = new Map<Class<Component>, Components>();
+		for (type in activeComponents) {
+			this.set(type, new Components());
+		}
 	}
 
-
-	
+	public inline function retrieveComponents(type: ComponentType): Components {
+		if (this.exists(type)) {
+			return this.get(type);
+		}
+		else {
+			throw "Tried to access a non-existent component type. Make sure that it is added before World Initialization.";
+		}
+	}
+}

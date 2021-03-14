@@ -1,5 +1,7 @@
 package;
 
+import haxe.ds.Vector;
+import khaterizer.pirandello.ComponentPool;
 import khaterizer.pirandello.Entity;
 import khaterizer.pirandello.Component;
 import kha.Shaders;
@@ -30,11 +32,5 @@ class Main {
 	static function init(window:Window) {
 		KtzRandom.init(456346);
 
-		var a = new Entity();
-		a.addComponent(new khaterizer.pirandello.Component("Hello"));
-		var x = a.getFirstComponent(Component);
-		if (x.match(Some(_))) {
-			trace(x.extract(Some(v) => v));
-		}
 	}
 }
