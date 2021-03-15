@@ -1,7 +1,6 @@
 package;
 
 import haxe.ds.Vector;
-import khaterizer.pirandello.ComponentPool;
 import khaterizer.pirandello.Entity;
 import khaterizer.pirandello.Component;
 import kha.Shaders;
@@ -31,6 +30,5 @@ class Main {
 
 	static function init(window:Window) {
 		KtzRandom.init(456346);
-
 	}
 }
