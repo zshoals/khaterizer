@@ -1,5 +1,6 @@
 package;
 
+import khaterizer.pirandello.World;
 import haxe.ds.Vector;
 import khaterizer.pirandello.Entity;
 import khaterizer.pirandello.Component;
@@ -30,5 +31,28 @@ class Main {
 
 	static function init(window:Window) {
 		KtzRandom.init(456346);
+		var config = new WorldConfiguration();
+		config.registerComponentTypes([
+			Position
+		]);
+		var w = new World(config);
+		var classType = w.retrieveStorage(Position);
 	}
+}
+
+class Position extends Component {
+	public var x: Int;
+	public var y: Int;
+	public var z: Int;
+	public function new() {}
+
+	override function initialize() {
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+	}
+}
+
+class Yeppers extends Component {
+	public function new() {}
 }
