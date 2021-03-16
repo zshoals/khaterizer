@@ -28,6 +28,9 @@ final class World {
 		//======================
 		this.components = new Map<ComponentType, Vector<Component>>();
 		for (componentType in configuration.componentsToRegister) {
+			if (this.components.exists(componentType)) {
+				throw 'Tried to add $componentType more than once. Verify that your world configuration has no duplicate components.';
+			}
 			//Careful. This is where we preallocate all of our components.
 			//This gets memory intensive fast, requiring either low entity counts or sparse components.
 			//We need to find a way to not just do it the stupid way.
@@ -45,8 +48,11 @@ final class World {
 		var phases = configuration.systemsToRegister;
 		for (phase in phases) {
 			var systems = phase.systems;
-			for (i in 0...systems.length) {
-				this.systems.set(systems[i], Type.createEmptyInstance(systems[i]));
+			for (systemType in systems) {
+				if (this.systems.exists(systemType)) {
+					throw 'Tried to add $systemType more than once. Verify that your world configuration has no duplicate systems.';
+				}
+				this.systems.set(systemType, Type.createEmptyInstance(systemType));
 				//systems[i].initialize();
 			}
 		}
@@ -115,7 +121,7 @@ final class WorldConfiguration {
 		assert(sameComponentStorageSize > 0, "Must have storage for at least one component, otherwise what's the point?");
 	}
 
-	public function registerComponentTypes(types: Array<Class<Component>>): Void {
+	public function registerComponentTypes(types: Array<ComponentType>): Void {
 		for (type in types) {
 			this.componentsToRegister.push(type);
 		}
@@ -127,7 +133,10 @@ final class WorldConfiguration {
 	// 	}
 	// }
 
-	public function registerPhasedSystems(types: Phase): Void {
-		this.systemsToRegister.push(types);
+	//This should be an array of phases :|
+	public function registerPhasedSystems(phases: Array<Phase>): Void {
+		for (phase in phases) {
+			this.systemsToRegister.push(phase);
+		}
 	}
 }

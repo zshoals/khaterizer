@@ -1,5 +1,6 @@
 package;
 
+import khaterizer.pirandello.Phase;
 import khaterizer.pirandello.World;
 import haxe.ds.Vector;
 import khaterizer.pirandello.Entity;
@@ -32,11 +33,24 @@ class Main {
 	static function init(window:Window) {
 		KtzRandom.init(456346);
 		var config = new WorldConfiguration();
+
+		var inputPhase = new Phase(1, [
+			SuperSystem
+		]);
+
 		config.registerComponentTypes([
 			Position
 		]);
+		config.registerPhasedSystems([
+			inputPhase,
+			inputPhase
+		]);
+
 		var w = new World(config);
 		var classType = w.retrieveStorage(Position);
+		var sys = w.retrieveSystem(SuperSystem);
+		trace(sys);
+		trace("Are we alive");
 	}
 }
 
@@ -53,6 +67,8 @@ class Position extends Component {
 	}
 }
 
-class Yeppers extends Component {
+class SuperSystem extends khaterizer.pirandello.System {
+	public var iamasystem: Int;
+
 	public function new() {}
 }
